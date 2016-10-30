@@ -72,6 +72,11 @@ public class Photo extends DataObject {
 	/**
 	 *
 	 */
+	public Location location;
+	
+	/**
+	 *
+	 */
 	protected String ownerId;
 	
 	/**
@@ -108,6 +113,7 @@ public class Photo extends DataObject {
 	/**
 	 *
 	 */
+	
 	protected int praiseSum = 10;
 	protected int noVotes = 1;
 	protected int noVotesAtLastNotification = 1;
