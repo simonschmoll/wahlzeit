@@ -1,5 +1,14 @@
 package org.wahlzeit.model;
 
+/*
+* Location
+*
+* V 1.1
+*
+* 31.10.16
+*
+* 
+*/
 
 
 public class Location{
@@ -20,6 +29,17 @@ public class Location{
 		
 		this.coordinate = new Coordinate(latitude,longitude);
 	}
+	
+	/**
+	 * 
+	 * @param coordinate
+	 * @return distance
+	 */
+	public double getDistance(Location location) {
+		return coordinate.getDistance(location.coordinate);
+				
+	}
+	
 	
 	
 }
