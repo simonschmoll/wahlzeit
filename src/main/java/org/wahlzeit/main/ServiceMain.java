@@ -79,7 +79,14 @@ public class ServiceMain extends ModelMain {
 	}
 
 	/**
-	 *
+	 * method to set the appropriate Test Mode
+	 */
+	public boolean setIsInProduction(boolean testMode) {
+		return instance.isInProduction = testMode;
+	}
+	
+	/**
+	 * 
 	 */
 	public boolean isInProduction() {
 		return instance.isInProduction;

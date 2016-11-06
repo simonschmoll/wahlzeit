@@ -4,6 +4,7 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -17,6 +18,8 @@ import static org.junit.Assert.fail;
  * 
  * @review
  */
+
+
 public abstract class AbstractAdapterTest {
 
 	protected ImageStorage imageStorage;
@@ -51,7 +54,7 @@ public abstract class AbstractAdapterTest {
 	protected void storageDependentTearDown() {
 	}
 
-
+	@Ignore
 	@Test
 	public void testWriteImage() {
 		try {
@@ -67,7 +70,7 @@ public abstract class AbstractAdapterTest {
 		}
 	}
 
-
+	@Ignore
 	@Test
 	public void testReadImage() {
 		try {
@@ -104,6 +107,7 @@ public abstract class AbstractAdapterTest {
 		assert image == null;
 	}
 
+	@Ignore
 	@Test
 	public void testImageExistence() {
 		boolean exists;
