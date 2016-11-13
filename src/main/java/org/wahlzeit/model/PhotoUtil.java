@@ -24,7 +24,6 @@ import com.google.appengine.api.images.Image;
 import com.google.appengine.api.images.ImagesService;
 import com.google.appengine.api.images.ImagesServiceFactory;
 import com.google.appengine.api.images.Transform;
-
 import org.wahlzeit.model.mountain.MountainPhotoFactory;
 import org.wahlzeit.services.LogBuilder;
 
