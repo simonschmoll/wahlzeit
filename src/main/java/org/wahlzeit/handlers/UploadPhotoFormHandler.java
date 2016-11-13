@@ -29,6 +29,8 @@ import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.Tags;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserSession;
+import org.wahlzeit.model.mountain.MountainPhoto;
+import org.wahlzeit.model.mountain.MountainPhotoManager;
 import org.wahlzeit.services.LogBuilder;
 import org.wahlzeit.utils.StringUtil;
 import org.wahlzeit.webparts.WebPart;
