@@ -37,16 +37,4 @@ public class MountainPhotoManager extends PhotoManager {
 	public MountainPhotoManager() {
 		super();
 	}
-
-	/**
-	 * 
-	 * @return instance
-	 * 
-	 * @methodtype get
-	 * 
-	 */
-	public static final MountainPhotoManager getInstance() {
-		return instance;
-	}
-
 }
