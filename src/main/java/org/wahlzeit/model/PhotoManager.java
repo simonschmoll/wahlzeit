@@ -48,7 +48,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 *
 	 */
-	private static final PhotoManager instance = new PhotoManager();
+	protected static final PhotoManager instance = new PhotoManager();
 
 	private static final Logger log = Logger.getLogger(PhotoManager.class.getName());
 
@@ -72,7 +72,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 *
 	 */
-	public static PhotoManager getInstance() {
+	public static final PhotoManager getInstance() {
 		return instance;
 	}
 
@@ -93,7 +93,7 @@ public class PhotoManager extends ObjectManager {
 	/**
 	 *
 	 */
-	public Photo getPhoto(PhotoId id) {
+	public final Photo getPhoto(PhotoId id) {
 		return instance.getPhotoFromId(id);
 	}
 
