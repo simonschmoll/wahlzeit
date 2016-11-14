@@ -64,10 +64,10 @@ public abstract class ModelMain extends AbstractMain {
 		log.config(LogBuilder.createSystemMessage().addAction("init MountainPhotoFactory").toString());
 		MountainPhotoFactory.initialize();
 		
-		log.config(LogBuilder.createSystemMessage().addAction("init MountainPhotoFactory").toString());
+		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
 		PhotoFactory.initialize();
 		
-		log.config(LogBuilder.createSystemMessage().addAction("init MountainPhotoFactory").toString());
+		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
 		PhotoManager.getInstance().init();
 		
 		log.config(LogBuilder.createSystemMessage().addAction("load MountainPhotos").toString());
