@@ -20,6 +20,7 @@
 
 package org.wahlzeit.model.mountain;
 
+import org.wahlzeit.model.Location;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
 
@@ -35,6 +36,8 @@ public class MountainPhoto extends Photo {
 
 	private MountainAltitudinalBelt altitudinalBelt;
 	private double height = 0;
+	
+	Location location = Location.LOCATION_UNDEFINED;
 
 	/**
 	 * @methodtype constructor

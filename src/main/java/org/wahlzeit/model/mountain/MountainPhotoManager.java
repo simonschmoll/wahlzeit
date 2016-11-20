@@ -20,6 +20,9 @@
 
 package org.wahlzeit.model.mountain;
 
+import org.wahlzeit.model.Photo;
+import org.wahlzeit.model.PhotoFactory;
+import org.wahlzeit.model.PhotoId;
 import org.wahlzeit.model.PhotoManager;
 
 /**
@@ -29,12 +32,35 @@ import org.wahlzeit.model.PhotoManager;
  */
 public class MountainPhotoManager extends PhotoManager {
 
-	public static final MountainPhotoManager instance = new MountainPhotoManager();
+	public static final MountainPhotoManager instanceMountain = new MountainPhotoManager();
 
 	/**
 	 * @methodtype constructor
 	 */
 	public MountainPhotoManager() {
-		super();
+		photoTagCollector = MountainPhotoFactory.getInstance().createPhotoTagCollector();
 	}
+	
+	/**
+	 *
+	 */
+	@Override
+	public Photo getPhotoFromId(PhotoId id) {
+		if (id == null) {
+			return null;
+		}
+
+		Photo result = doGetPhotoFromId(id);
+
+		if (result == null) {
+			result = MountainPhotoFactory.getInstance().loadPhoto(id);
+			if (result != null) {
+				doAddPhoto(result);
+			}
+		}
+
+		return result;
+	}
+
+
 }

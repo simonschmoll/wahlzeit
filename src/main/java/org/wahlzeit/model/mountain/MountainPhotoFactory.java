@@ -33,7 +33,7 @@ import org.wahlzeit.services.LogBuilder;
  */
 public class MountainPhotoFactory extends PhotoFactory {
 
-	private static MountainPhotoFactory instance = null;
+	private static MountainPhotoFactory instanceMountain = null;
 
 	private static final Logger log = Logger.getLogger(MountainPhotoFactory.class.getName());
 
@@ -50,12 +50,12 @@ public class MountainPhotoFactory extends PhotoFactory {
 	 * @methodtype getter
 	 */
 	public static synchronized MountainPhotoFactory getInstance() {
-		if (instance == null) {
+		if (instanceMountain == null) {
 			log.config(LogBuilder.createSystemMessage().addAction("setting generic MountainPhotoFactory").toString());
 			setInstance(new MountainPhotoFactory());
 		}
 
-		return instance;
+		return instanceMountain;
 	}
 
 	/**
@@ -64,11 +64,11 @@ public class MountainPhotoFactory extends PhotoFactory {
 	 * @param MountainPhotoFactory
 	 */
 	protected static synchronized void setInstance(MountainPhotoFactory MountainPhotoFactory) {
-		if (instance != null) {
+		if (instanceMountain != null) {
 			throw new IllegalStateException("attempt to initalize MountainPhotoFactory twice");
 		}
 
-		instance = MountainPhotoFactory;
+		instanceMountain = MountainPhotoFactory;
 	}
 
 	/**

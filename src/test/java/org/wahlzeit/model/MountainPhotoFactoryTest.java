@@ -57,16 +57,6 @@ public class MountainPhotoFactoryTest {
 	 * 
 	 */
 	@Test
-	public void setterTest() {
-		MountainPhotoFactory testFactory = new MountainPhotoFactory();
-		MountainPhotoFactory.setInstance(testFactory);
-		assertNotNull(MountainPhotoFactory.getInstance());
-	}
-
-	/**
-	 * 
-	 */
-	@Test
 	public void createPhotoTest() {
 		MountainPhoto testPhoto = MountainPhotoFactory.getInstance().createPhoto();
 		assertNotNull(testPhoto);

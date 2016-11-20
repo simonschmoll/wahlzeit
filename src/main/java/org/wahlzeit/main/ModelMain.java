@@ -61,15 +61,15 @@ public abstract class ModelMain extends AbstractMain {
 		log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
 		UserManager.getInstance().init();
 		
+//		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
+//		PhotoFactory.initialize();
+//				
+//		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
+//		PhotoManager.getInstance().init();
+		
 		log.config(LogBuilder.createSystemMessage().addAction("init MountainPhotoFactory").toString());
 		MountainPhotoFactory.initialize();
-		
-		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
-		PhotoFactory.initialize();
-		
-		log.config(LogBuilder.createSystemMessage().addAction("load Photos").toString());
-		PhotoManager.getInstance().init();
-		
+				
 		log.config(LogBuilder.createSystemMessage().addAction("load MountainPhotos").toString());
 		MountainPhotoManager.getInstance().init();
 		
@@ -90,7 +90,7 @@ public abstract class ModelMain extends AbstractMain {
 	 */
 	public void saveAll() throws IOException{
 		PhotoCaseManager.getInstance().savePhotoCases();
-		PhotoManager.getInstance().savePhotos();
+		MountainPhotoManager.getInstance().savePhotos();
 		UserManager.getInstance().saveClients();
 		GlobalsManager.getInstance().saveGlobals();
 	}
@@ -102,7 +102,7 @@ public abstract class ModelMain extends AbstractMain {
 		UserManager userManager = UserManager.getInstance();
 		new User(userId, nickName, emailAddress);
 
-		PhotoManager photoManager = PhotoManager.getInstance();
+		PhotoManager photoManager = MountainPhotoManager.getInstance();
 		File photoDirFile = new File(photoDir);
 		FileFilter photoFileFilter = new FileFilter() {
 			public boolean accept(File file) {
