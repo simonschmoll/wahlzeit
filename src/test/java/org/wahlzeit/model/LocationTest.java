@@ -20,17 +20,34 @@
 
 package org.wahlzeit.model;
 
-/**
- * 
- * interface for the Coordinate classes
- *
- */
-interface Coordinate {
+import static org.junit.Assert.assertNotNull;
 
+import org.junit.Test;
+
+public class LocationTest {
+
+	Location testLocationSpheric;
+	Location testLocationCartesian;
+	
 	/**
-	 * 
-	 * @param coordinate
-	 * @return distance
+	 *
 	 */
-	public double getDistance(Coordinate coordinate);
+	@Test
+	public void constructorTestSpheric() {
+		SphericCoordinate testCoordinate = new SphericCoordinate(0,0);
+		testLocationSpheric = new Location(testCoordinate);
+		assertNotNull(testLocationSpheric);
+	}
+	
+	/**
+	 *
+	 */
+	@Test
+	public void constructorTestCartesian() {
+		CartesianCoordinate testCoordinate = new CartesianCoordinate(0,0, 6371);
+		testLocationCartesian = new Location(testCoordinate);
+		assertNotNull(testLocationCartesian);
+	}
+	
+	
 }

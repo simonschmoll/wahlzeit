@@ -1,43 +1,58 @@
+/*
+ * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
+ *
+ * This file is part of the Wahlzeit photo rating application.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with this program. If not, see
+ * <http://www.gnu.org/licenses/>.
+ */
+
 package org.wahlzeit.model;
 
-/*
-* Location
-*
-* V 1.1
-*
-* 31.10.16
-*
-* 
-*/
+import com.googlecode.objectify.annotation.Ignore;
 
+/**
+ * 
+ * class to represent a location
+ *
+ */
 
 public class Location{
-	public Coordinate coordinate;
-	public static final int MAXLATITUDE = 90;
-	public static final int MINLATITUDE = -90;
-	public static final int MAXLONGITUDE = 180;
-	public static final int MINLONGITUDE= -180;
 	
-	public Location(double latitude, double longitude) {
-		if(latitude < MINLATITUDE || latitude > MAXLATITUDE ) {
-			throw new IllegalArgumentException("Latitude is out of acceptable Range" + latitude);
-		}
-		
-		if(longitude < MINLONGITUDE || longitude > MAXLONGITUDE) {
-			throw new IllegalArgumentException("Longitude is out of acceptable Range" + longitude);
-		}
-		
-		this.coordinate = new Coordinate(latitude,longitude);
+	@Ignore
+	private Coordinate coordinate;
+	public static final Location LOCATION_UNDEFINED = new Location(null);
+	
+	/**
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @throws IllegalArgumentException
+	 * @methodtype constructor
+	 */
+	public Location(Coordinate coordinate) {
+		this.coordinate = coordinate;
 	}
 	
 	/**
 	 * 
 	 * @param coordinate
 	 * @return distance
+	 * @methodtype constructor
 	 */
 	public double getDistance(Location location) {
 		return coordinate.getDistance(location.coordinate);
-				
 	}
 	
 	
