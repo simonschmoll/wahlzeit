@@ -35,10 +35,6 @@ public class Location{
 	public static final Location LOCATION_UNDEFINED = new Location(null);
 	
 	/**
-	 * 
-	 * @param latitude
-	 * @param longitude
-	 * @throws IllegalArgumentException
 	 * @methodtype constructor
 	 */
 	public Location(Coordinate coordinate) {
