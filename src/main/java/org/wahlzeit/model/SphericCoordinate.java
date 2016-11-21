@@ -129,7 +129,7 @@ public class SphericCoordinate implements Coordinate {
 	/**
 	 * calculates the distance between two coordinates
 	 * 
-	 * @param comüparisonCoordinate
+	 * @param comparisonCoordinate
 	 * @return distance
 	 */
 	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
