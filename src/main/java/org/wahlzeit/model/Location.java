@@ -43,7 +43,7 @@ public class Location{
 	
 	/**
 	 * 
-	 * @param coordinate
+	 * @param location
 	 * @return distance
 	 * @methodtype constructor
 	 */

@@ -129,7 +129,7 @@ public class SphericCoordinate implements Coordinate {
 	/**
 	 * calculates the distance between two coordinates
 	 * 
-	 * @param coordinate
+	 * @param comüparisonCoordinate
 	 * @return distance
 	 */
 	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
@@ -171,7 +171,7 @@ public class SphericCoordinate implements Coordinate {
 	 * retrieved from https://rbrundritt.wordpress.com/2008/10/14/conversion-between-spherical-and-cartesian-coordinates-systems/
 	 * 
 	 * @param coordinate
-	 * @return Spheric Coordinate
+	 * @return SphericCoordinate
 	 * @methodtype helper
 	 */
 	public SphericCoordinate convertFromCartesianToSpheric(CartesianCoordinate coordinate) {
