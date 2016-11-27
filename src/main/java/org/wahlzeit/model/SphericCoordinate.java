@@ -25,7 +25,7 @@ package org.wahlzeit.model;
  * class to represent a Spheric Coordinate
  *
  */
-public class SphericCoordinate implements Coordinate {
+public class SphericCoordinate extends AbstractCoordinate {
 
 	private double latitude;
 	private double longitude;
@@ -133,53 +133,33 @@ public class SphericCoordinate implements Coordinate {
 	 * @return distance
 	 */
 	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
-
-		if (comparisonCoordinate instanceof SphericCoordinate) {
-			return calculateDistance((SphericCoordinate) comparisonCoordinate);
-
-		} else if (comparisonCoordinate instanceof CartesianCoordinate) {
-			CartesianCoordinate helperCoordinate = (CartesianCoordinate) comparisonCoordinate;
-			return calculateDistance(convertFromCartesianToSpheric(helperCoordinate));
+		if(comparisonCoordinate instanceof SphericCoordinate || comparisonCoordinate instanceof CartesianCoordinate){
+			return super.getDistance(comparisonCoordinate);
 		} else {
-			throw new IllegalArgumentException("Not a defined subtyp of Coordinate" + comparisonCoordinate);
+			throw new IllegalArgumentException("wrong Coordinate type" + comparisonCoordinate);
 		}
-
 	}
 
-	/**
-	 * 
-	 * @param coordinate
-	 * @return distance between two Spheric Coordinates
-	 */
-	public double calculateDistance(SphericCoordinate coordinate) {
-		double latitudeRadian1 = Math.toRadians(coordinate.getLatitude());
-		double latitudeRadian2 = Math.toRadians(this.latitude);
-		double absoluteDistanceLatitudeInRadian = Math.toRadians(Math.abs(coordinate.getLatitude() - this.latitude));
-		double absoluteDistanceLongitudeInRadian = Math.toRadians(Math.abs(coordinate.getLongitude() - this.longitude));
-
-		double centralAngle = 2 * Math.asin(
-				Math.sqrt(Math.pow((Math.sin(absoluteDistanceLatitudeInRadian / 2)), 2) + (Math.cos(latitudeRadian1)
-						* Math.cos(latitudeRadian2) * Math.pow(Math.sin(absoluteDistanceLongitudeInRadian / 2), 2))));
-		double result = radius * centralAngle;
-		return result;
-	}
+	 /**
+	  * 
+	  * @return Cartesian Coordinate
+	  * @methodtype conversion
+	  * 
+	  */
+	 public CartesianCoordinate asCartesian(){
+			 double lat = Math.toRadians(this.latitude);
+			 double longi = Math.toRadians(this.longitude);
+			 double x = this.radius * Math.cos(lat) *
+			 Math.cos(longi);
+			 double y = this.radius * Math.cos(lat) *
+			 Math.sin(longi);
+			 double z = this.radius * Math.sin(lat);
+			 return new CartesianCoordinate(x, y, z);
+	 }
+	 
+	 
+	 
 	
-	/**
-	 * converts a Cartesian Coordinate to a Spheric Coordinate under the premise
-	 * that the earth is spherical and not ellipsoid
-	 * 
-	 * retrieved from https://rbrundritt.wordpress.com/2008/10/14/conversion-between-spherical-and-cartesian-coordinates-systems/
-	 * 
-	 * @param coordinate
-	 * @return SphericCoordinate
-	 * @methodtype helper
-	 */
-	public SphericCoordinate convertFromCartesianToSpheric(CartesianCoordinate coordinate) {
-		double radius = Math.sqrt(Math.pow(coordinate.getX(), 2) + Math.pow(coordinate.getY(), 2) + Math.pow(coordinate.getZ(), 2));
-		double latitude = Math.toDegrees(Math.asin(coordinate.getZ()/ radius));
-		double longitude = Math.toDegrees(Math.atan2(coordinate.getY(), coordinate.getX()));
-		return new SphericCoordinate(latitude, longitude, radius);
-	}
 	
 	
 }

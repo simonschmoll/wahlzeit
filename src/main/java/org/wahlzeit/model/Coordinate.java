@@ -27,10 +27,26 @@ package org.wahlzeit.model;
  */
 interface Coordinate {
 
+
 	/**
 	 * 
 	 * @param coordinate
 	 * @return distance
 	 */
-	public double getDistance(Coordinate coordinate);
+	public double getDistance(Coordinate comparisonCoordinate);
+	
+	/**
+	 * 
+	 * @param coordinate
+	 * @return boolean
+	 */
+	public boolean isEqual(Coordinate comparisonCoordinate);
+	
+	/**
+	 * 
+	 * @param coordinate
+	 * @methodtype conversion
+	 */
+	public CartesianCoordinate asCartesian();
+		
 }

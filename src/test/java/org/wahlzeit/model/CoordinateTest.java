@@ -30,10 +30,6 @@ import org.junit.Test;
  *
  */
 public class CoordinateTest {
-
-private static final double deviationPercentageBetweenSphericalAndEllipsoid = 0.05;
-	
-
 	
 	SphericCoordinate sphericCoor;
 	CartesianCoordinate cartesianCoor;
@@ -72,9 +68,9 @@ private static final double deviationPercentageBetweenSphericalAndEllipsoid = 0.
 		cartesianCoor.setX(0);
 		cartesianCoor.setY(0);
 		cartesianCoor.setZ(6371);
-		Assert.assertEquals(cartesianCoor.getX(), 0.0, 0.001);
-		Assert.assertEquals(cartesianCoor.getY(), 0.0, 0.001);
-		Assert.assertEquals(cartesianCoor.getZ(), 6371, 0.001);
+		Assert.assertEquals(cartesianCoor.getX(), 0.0, 0);
+		Assert.assertEquals(cartesianCoor.getY(), 0.0, 0);
+		Assert.assertEquals(cartesianCoor.getZ(), 6371, 0);
 	}
 	
 	/**
@@ -85,9 +81,9 @@ private static final double deviationPercentageBetweenSphericalAndEllipsoid = 0.
 		sphericCoor.setLatitude(90);
 		sphericCoor.setLongitude(0);
 		sphericCoor.setRadius(6000);
-		Assert.assertEquals(sphericCoor.getLatitude(),90, 0.001);
-		Assert.assertEquals(sphericCoor.getLongitude(),0, 0.001);
-		Assert.assertEquals(sphericCoor.getRadius(),6000, 0.001);
+		Assert.assertEquals(sphericCoor.getLatitude(),90, 0);
+		Assert.assertEquals(sphericCoor.getLongitude(),0, 0);
+		Assert.assertEquals(sphericCoor.getRadius(),6000, 0);
 	}
 	
 	/**
@@ -161,7 +157,7 @@ private static final double deviationPercentageBetweenSphericalAndEllipsoid = 0.
 	public void conversionSphericToCartesianTest() {
 		sphericCoor = new SphericCoordinate(90, 0);
 		cartesianCoor = new CartesianCoordinate(0, 0, 6371);
-		CartesianCoordinate testCoordinate = cartesianCoor.convertFromSphericToCartesian(sphericCoor);
+		CartesianCoordinate testCoordinate = sphericCoor.asCartesian();
 		Assert.assertEquals(cartesianCoor.getX(), testCoordinate.getX(), 0.001);
 		Assert.assertEquals(cartesianCoor.getY(), testCoordinate.getY(), 0.001);
 		Assert.assertEquals(cartesianCoor.getZ(), testCoordinate.getZ(), 0.001);
@@ -171,93 +167,57 @@ private static final double deviationPercentageBetweenSphericalAndEllipsoid = 0.
 	 * 
 	 */
 	@Test
-	public void conversionCartesianToSphericTest() {
-		sphericCoor = new SphericCoordinate(90, 0);
-		cartesianCoor = new CartesianCoordinate(0, 0, 6371);
-		SphericCoordinate testCoordinate = sphericCoor.convertFromCartesianToSpheric(cartesianCoor);
-		Assert.assertEquals(sphericCoor.getLatitude(), testCoordinate.getLatitude(), 0.001);
-		Assert.assertEquals(sphericCoor.getLongitude(), testCoordinate.getLongitude(), 0.001);
-		Assert.assertEquals(sphericCoor.getRadius(), testCoordinate.getRadius(), 0.001);
-	}
-	
-	/**
-	*
-	*/
-	@Test
-	public void accuracyTestForFarLocations() {
-		sphericCoor = new SphericCoordinate(23.684994, 90.356331); // polar coordinates of someplace in Bangladesh
-		CartesianCoordinate cartesianBangladesh = cartesianCoor.convertFromSphericToCartesian(sphericCoor);
-		SphericCoordinate tokyo = new SphericCoordinate(35.689487,139.691706);
-		CartesianCoordinate cartesianTokyo = cartesianCoor.convertFromSphericToCartesian(tokyo);
-		double distanceBetweenTokyoAndBangladeshEllipsoidCalculator = 4903.162222070491; 
-		// calculated with http://www.fai.org/distance_calculation/ earth model: WGS84
-		double deviationSphericalToEllipsoid = distanceBetweenTokyoAndBangladeshEllipsoidCalculator * 
-													deviationPercentageBetweenSphericalAndEllipsoid;
-		double resultSpheric = sphericCoor.getDistance(tokyo);
-		double resultCartesian = cartesianBangladesh.getDistance(cartesianTokyo);
-
-		Assert.assertEquals(resultSpheric, distanceBetweenTokyoAndBangladeshEllipsoidCalculator, deviationSphericalToEllipsoid);
-		Assert.assertEquals(resultCartesian, distanceBetweenTokyoAndBangladeshEllipsoidCalculator, deviationSphericalToEllipsoid);
-		// according to Wikipedia the deviation might add up to 5%
-	}
-	
-	/**
-	 *
-	 */
-	@Test
-	public void accuracyTestForNearLocations() {
-		sphericCoor = new SphericCoordinate(52.520007, 13.404954); // polar coordinates of somewhere in Berlin
-		CartesianCoordinate cartesianBerlin = cartesianCoor.convertFromSphericToCartesian(sphericCoor);
-		SphericCoordinate hamburg = new SphericCoordinate(53.551085, 9.993682);
-		CartesianCoordinate cartesianHamburg = cartesianCoor.convertFromSphericToCartesian(hamburg);
-		double distanceBetweenBerlinAndHamburgEllipsoidCalculator = 255.9556456597355; 
-				// calculated with http://www.fai.org/distance_calculation/ earth model: WGS84
-		double deviationSphericalToEllipsoid = 	(distanceBetweenBerlinAndHamburgEllipsoidCalculator * 
-													deviationPercentageBetweenSphericalAndEllipsoid);
-		double resultSpheric = sphericCoor.getDistance(hamburg);
-		double resultCartesian = cartesianBerlin.getDistance(cartesianHamburg);
-		
-		Assert.assertEquals(resultSpheric, distanceBetweenBerlinAndHamburgEllipsoidCalculator, deviationSphericalToEllipsoid);
-		Assert.assertEquals(resultCartesian, distanceBetweenBerlinAndHamburgEllipsoidCalculator, deviationSphericalToEllipsoid);
-		// according to Wikipedia the deviation might add up to 5%
+	public void distanceTestSameCoordinateType() {
+		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
+		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
+		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
+		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, -6371);
+		double resultExpected = 2*6371;
+		double resultCalculatedSpheric = sphericCoor.getDistance(sphericCoor2);
+		double resultCalculatedCartesian = cartesianCoor.getDistance(cartesianCoor2);
+		Assert.assertEquals( resultExpected, resultCalculatedSpheric, 0.001);
+		Assert.assertEquals( resultExpected, resultCalculatedCartesian, 0.001);
 	}
 	
 	/**
 	 * 
 	 */
 	@Test
-	public void crossOverTestCartesianSpheric() {
-		sphericCoor = new SphericCoordinate(52.520007, 13.404954); // polar coordinates of somewhere in Berlin
-		CartesianCoordinate cartesianBerlin = cartesianCoor.convertFromSphericToCartesian(sphericCoor);
-		SphericCoordinate hamburg = new SphericCoordinate(53.551085, 9.993682);
-		double distanceBetweenBerlinAndHamburgEllipsoidCalculator = 255.9556456597355; 
-				// calculated with http://www.fai.org/distance_calculation/ earth model: WGS84
-		double deviationSphericalToEllipsoid = 	(distanceBetweenBerlinAndHamburgEllipsoidCalculator * 
-													deviationPercentageBetweenSphericalAndEllipsoid);
-		double resultCrossOver = cartesianBerlin.getDistance(hamburg);
-
-		Assert.assertEquals(resultCrossOver, distanceBetweenBerlinAndHamburgEllipsoidCalculator, deviationSphericalToEllipsoid);
-		// according to Wikipedia the deviation might add up to 5%
+	public void distanceTestDifferentCoordinateTypes() {
+		SphericCoordinate sphericCoor = new SphericCoordinate (90, 0);
+		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
+		double resultExpected = 2*6371;
+		double resultCalculatedSpheric = sphericCoor.getDistance(cartesianCoor);
+		double resultCalculatedCartesian = cartesianCoor.getDistance(sphericCoor);
+		Assert.assertEquals( resultExpected, resultCalculatedSpheric, 0.001);
+		Assert.assertEquals( resultExpected, resultCalculatedCartesian, 0.001);
+				
+	}	
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void isEqualTest() {
+		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
+		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
+		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
+		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
+		Assert.assertTrue(sphericCoor.isEqual(cartesianCoor));
+		Assert.assertTrue(sphericCoor2.isEqual(cartesianCoor2));
+		Assert.assertTrue(sphericCoor.isEqual(sphericCoor.asCartesian()));
 	}
 	
 	/**
 	 * 
 	 */
 	@Test
-	public void crossOverTestSphericCartesian() {
-		sphericCoor = new SphericCoordinate(52.520007, 13.404954); // polar coordinates of somewhere in Berlin
-		CartesianCoordinate cartesianBerlin = cartesianCoor.convertFromSphericToCartesian(sphericCoor);
-		SphericCoordinate hamburgSpheric = new SphericCoordinate(53.551085, 9.993682);
-		double distanceBetweenBerlinAndHamburgEllipsoidCalculator = 255.9556456597355; 
-				// calculated with http://www.fai.org/distance_calculation/ earth model: WGS84
-		double deviationSphericalToEllipsoid = 	(distanceBetweenBerlinAndHamburgEllipsoidCalculator * 
-													deviationPercentageBetweenSphericalAndEllipsoid);
-		double resultCrossOver = hamburgSpheric.getDistance(cartesianBerlin);
-
-		Assert.assertEquals(resultCrossOver, distanceBetweenBerlinAndHamburgEllipsoidCalculator, deviationSphericalToEllipsoid);
-		// according to Wikipedia the deviation might add up to 5%
+	public void isEqualTest2() {
+		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
+		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
+		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
+		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
+		Assert.assertFalse(sphericCoor.isEqual(cartesianCoor2));
+		Assert.assertFalse(sphericCoor2.isEqual(cartesianCoor));
 	}
-	
-	
-	
 }
