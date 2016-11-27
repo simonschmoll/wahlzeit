@@ -29,10 +29,16 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return direct distance between two Coordinates
 	 * 
 	 */
-	public double getDistance(Coordinate comparisonCoordinate) {
-		return Math.sqrt((Math.pow(comparisonCoordinate.asCartesian().getX() - this.asCartesian().getX(), 2))
+	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException{
+		if (comparisonCoordinate instanceof AbstractCoordinate) {
+			return Math.sqrt((Math.pow(comparisonCoordinate.asCartesian().getX() - this.asCartesian().getX(), 2))
 				+ (Math.pow(comparisonCoordinate.asCartesian().getY() - this.asCartesian().getY(), 2))
 				+ (Math.pow(comparisonCoordinate.asCartesian().getZ() - this.asCartesian().getZ(), 2)));
+		}
+		else {
+			throw new IllegalArgumentException("unknown Coordinate" + comparisonCoordinate);
+		}
+		
 	}
 
 	/**

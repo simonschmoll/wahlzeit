@@ -126,19 +126,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 		this.radius = radius;
 	}
 
-	/**
-	 * calculates the distance between two coordinates
-	 * 
-	 * @param comparisonCoordinate
-	 * @return distance
-	 */
-	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
-		if(comparisonCoordinate instanceof SphericCoordinate || comparisonCoordinate instanceof CartesianCoordinate){
-			return super.getDistance(comparisonCoordinate);
-		} else {
-			throw new IllegalArgumentException("wrong Coordinate type" + comparisonCoordinate);
-		}
-	}
 
 	 /**
 	  * 

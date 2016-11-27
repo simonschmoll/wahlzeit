@@ -107,21 +107,6 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		this.z = z;
 	}
 	
-	/**
-	 * 
-	 * @param comparisonCoordinate
-	 * @return distance
-	 * @throws IllegalArgumentException
-	 * retrieved from http://mathsfirst.massey.ac.nz/Algebra/PythagorasTheorem/pythapp.htm
-	 * 
-	 */
-	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
-			if(comparisonCoordinate instanceof SphericCoordinate || comparisonCoordinate instanceof CartesianCoordinate){
-				return super.getDistance(comparisonCoordinate);
-			} else {
-				throw new IllegalArgumentException("wrong Coordinate type" + comparisonCoordinate);
-			}
-	}
 	
 	 /**
 	 *
