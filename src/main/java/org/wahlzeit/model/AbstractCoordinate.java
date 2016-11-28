@@ -20,6 +20,11 @@
 
 package org.wahlzeit.model;
 
+/**
+ * 
+ * abstract Superclass for Coordinates
+ *
+ */
 public abstract class AbstractCoordinate implements Coordinate {
 
 	/**
@@ -44,6 +49,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	/**
 	 * @param comparisonCoordinate
 	 * @return boolean
+	 * @methodtype boolean query
 	 */
 	public boolean isEqual(Coordinate comparisonCoordinate) {
 		if (this == null || comparisonCoordinate == null) {
@@ -63,7 +69,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @param y
 	 * @return boolean
 	 */
-	public boolean doIsEqualWithDeviation(double x, double y) {
+	private boolean doIsEqualWithDeviation(double x, double y) {
 		double deviation = 0.00001;
 		if (Math.abs(x - y) <= deviation)
 			return true;
