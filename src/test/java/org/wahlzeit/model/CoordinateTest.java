@@ -68,9 +68,9 @@ public class CoordinateTest {
 		cartesianCoor.setX(0);
 		cartesianCoor.setY(0);
 		cartesianCoor.setZ(6371);
-		Assert.assertEquals(cartesianCoor.getX(), 0.0, 0);
-		Assert.assertEquals(cartesianCoor.getY(), 0.0, 0);
-		Assert.assertEquals(cartesianCoor.getZ(), 6371, 0);
+		Assert.assertEquals(cartesianCoor.getCartesianX(), 0.0, 0);
+		Assert.assertEquals(cartesianCoor.getCartesianY(), 0.0, 0);
+		Assert.assertEquals(cartesianCoor.getCartesianZ(), 6371, 0);
 	}
 	
 	/**
@@ -157,10 +157,9 @@ public class CoordinateTest {
 	public void conversionSphericToCartesianTest() {
 		sphericCoor = new SphericCoordinate(90, 0);
 		cartesianCoor = new CartesianCoordinate(0, 0, 6371);
-		CartesianCoordinate testCoordinate = sphericCoor.asCartesian();
-		Assert.assertEquals(cartesianCoor.getX(), testCoordinate.getX(), 0.001);
-		Assert.assertEquals(cartesianCoor.getY(), testCoordinate.getY(), 0.001);
-		Assert.assertEquals(cartesianCoor.getZ(), testCoordinate.getZ(), 0.001);
+		Assert.assertEquals(cartesianCoor.getCartesianX(), sphericCoor.getCartesianX(), 0.001);
+		Assert.assertEquals(cartesianCoor.getCartesianY(), sphericCoor.getCartesianY(), 0.001);
+		Assert.assertEquals(cartesianCoor.getCartesianZ(), sphericCoor.getCartesianZ(), 0.001);
 	}
 	
 	/**
@@ -205,7 +204,6 @@ public class CoordinateTest {
 		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
 		Assert.assertTrue(sphericCoor.isEqual(cartesianCoor));
 		Assert.assertTrue(sphericCoor2.isEqual(cartesianCoor2));
-		Assert.assertTrue(sphericCoor.isEqual(sphericCoor.asCartesian()));
 	}
 	
 	/**
