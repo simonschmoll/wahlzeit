@@ -44,9 +44,20 @@ interface Coordinate {
 	
 	/**
 	 * 
-	 * @param coordinate
-	 * @methodtype conversion
+	 * @return value x of the Cartesian Coordinate representation
 	 */
-	public CartesianCoordinate asCartesian();
-		
+	public double getCartesianX();
+	
+	/**
+	 * 
+	 * @return value y of the Cartesian Coordinate representation
+	 */
+	public double getCartesianY();
+	
+	/**
+	 * 
+	 * @return value z of the Cartesian Coordinate representation
+	 */
+	public double getCartesianZ();
+	
 }
