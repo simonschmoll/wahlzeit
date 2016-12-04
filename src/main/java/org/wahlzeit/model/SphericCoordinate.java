@@ -56,19 +56,50 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype constructor
 	 */
 	public SphericCoordinate(double latitude, double longitude, double radius) {
-		assertIsValidSphericCoordinate(latitude, longitude);
+		assertIsValidLatitude(latitude);
+		assertIsValidLongitude(longitude);
+		assertIsValidRadius(radius);
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.radius = radius;
 	}
 	
-	public static void assertIsValidSphericCoordinate(double latitude, double longitude) throws IllegalArgumentException {
-		if((longitude < MINLONGITUDE ) || (longitude > MAXLONGITUDE)) {
-			throw new IllegalArgumentException("Invalid Parameter for Longitude: " + longitude);
-		}else if (( latitude < MINLATITUDE ) || ( latitude > MAXLATITUDE)) {
+	/**
+	 * 
+	 * @param latitude
+	 * @throws IllegalArgumentException
+	 * @methodtype assertion
+	 */
+	public static void assertIsValidLatitude(double latitude) throws IllegalArgumentException {
+		if (( latitude < MINLATITUDE ) || ( latitude > MAXLATITUDE)) {
 			throw new IllegalArgumentException("Invalid Parameter for Latitude: " + latitude);
 		} 
 	}
+	
+	/**
+	 * 
+	 * @param longitude
+	 * @throws IllegalArgumentException
+	 * @methodtype assertion
+	 */
+	public static void assertIsValidLongitude(double longitude) throws IllegalArgumentException {
+		if((longitude < MINLONGITUDE ) || (longitude > MAXLONGITUDE)) {
+			throw new IllegalArgumentException("Invalid Parameter for Longitude: " + longitude);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param radius
+	 * @throws IllegalArgumentException
+	 * @methodtype assertion
+	 */
+	public static void assertIsValidRadius (double radius) throws IllegalArgumentException{
+		if (radius <= 0) {
+			throw new IllegalArgumentException("Radius must be greater than zero");
+		}
+	}
+	
 
 	/**
 	 * 
@@ -103,7 +134,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype setter
 	 */
 	public void setLatitude(double latitude) throws IllegalArgumentException{
-		assertIsValidSphericCoordinate(latitude, 0);
+		assertIsValidLatitude(latitude);
 		this.latitude = latitude;
 	}
 
@@ -113,7 +144,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype setter
 	 */
 	public void setLongitude(double longitude) throws IllegalArgumentException{
-		assertIsValidSphericCoordinate(0, longitude);
+		assertIsValidLongitude(longitude);
 		this.longitude = longitude;
 	}
 
@@ -123,30 +154,36 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype setter
 	 */
 	public void setRadius(double radius) {
+		assertIsValidRadius(radius);
 		this.radius = radius;
 	}
 
+	/**
+	 * @return value representing the x-coordinate in a Cartesian Coordinate system
+	 * @methodtype conversion
+	 */
+	@Override
+	public double getCartesianX() {
+		return this.radius * Math.cos(Math.toRadians(this.latitude)) *
+		 Math.cos(Math.toRadians(this.longitude));
+	}
 
-	 /**
-	  * 
-	  * @return Cartesian Coordinate
-	  * @methodtype conversion
-	  * 
-	  */
-	 public CartesianCoordinate asCartesian(){
-			 double lat = Math.toRadians(this.latitude);
-			 double longi = Math.toRadians(this.longitude);
-			 double x = this.radius * Math.cos(lat) *
-			 Math.cos(longi);
-			 double y = this.radius * Math.cos(lat) *
-			 Math.sin(longi);
-			 double z = this.radius * Math.sin(lat);
-			 return new CartesianCoordinate(x, y, z);
-	 }
-	 
-	 
-	 
-	
-	
-	
+	/**
+	 * @return value representing the y-coordinate in a Cartesian Coordinate system
+	 * @methodtype conversion
+	 */
+	@Override
+	public double getCartesianY() {
+		return this.radius * Math.cos(Math.toRadians(this.latitude)) *
+		Math.sin(Math.toRadians(this.longitude));
+	}
+
+	/**
+	 * @return value representing the z-coordinate in a Cartesian Coordinate system
+	 * @methodtype conversion
+	 */
+	@Override
+	public double getCartesianZ() {
+		return this.radius * Math.sin(Math.toRadians(this.latitude));
+	}	
 }

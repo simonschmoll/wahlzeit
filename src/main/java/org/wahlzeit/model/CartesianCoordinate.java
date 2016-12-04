@@ -58,7 +58,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @return x
 	 * @methodytype getter
 	 */
-	public double getX() {
+	public double getCartesianX() {
 		return x;
 	}
 
@@ -67,7 +67,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @return y
 	 * @methodytype getter
 	 */
-	public double getY() {
+	public double getCartesianY() {
 		return y;
 	}
 
@@ -76,7 +76,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @return z
 	 * @methodytype getter
 	 */
-	public double getZ() {
+	public double getCartesianZ() {
 		return z;
 	}
 
@@ -105,19 +105,5 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 */
 	public void setZ(double z) {
 		this.z = z;
-	}
-	
-	
-	 /**
-	 *
-	 * @return Cartesian Coordinate
-	 * @methodtype helper
-	 */
-	 public CartesianCoordinate asCartesian(){
-		 return this;
-	 }
-
-
-
-	 
+	}	 
 }

@@ -29,40 +29,82 @@ public abstract class AbstractCoordinate implements Coordinate {
 
 	/**
 	 * calculates the distance between to Coordinates
+	 * 
 	 * @param comparisonCoordinate,
 	 * @param comparisonCoordinate2
 	 * @return direct distance between two Coordinates
 	 * 
 	 */
-	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException{
-		if (comparisonCoordinate instanceof AbstractCoordinate) {
-			return Math.sqrt((Math.pow(comparisonCoordinate.asCartesian().getX() - this.asCartesian().getX(), 2))
-				+ (Math.pow(comparisonCoordinate.asCartesian().getY() - this.asCartesian().getY(), 2))
-				+ (Math.pow(comparisonCoordinate.asCartesian().getZ() - this.asCartesian().getZ(), 2)));
-		}
-		else {
-			throw new IllegalArgumentException("unknown Coordinate" + comparisonCoordinate);
-		}
-		
+	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
+		assertIsNonNullArgument(comparisonCoordinate);
+		assertIsValidInstanceOfCoordinate(comparisonCoordinate);
+		double distance = 0;
+		distance = doCalculateDistance(comparisonCoordinate);
+		assertClassInvariants();
+		return distance;
 	}
+	
+	/**
+	 * 
+	 * @param comparisonCoordinate
+	 * @return distance between two Coordinates
+	 */
+	private double doCalculateDistance(Coordinate comparisonCoordinate) {
+		return Math.sqrt((Math.pow(comparisonCoordinate.getCartesianX() - this.getCartesianX(), 2))
+				+ (Math.pow(comparisonCoordinate.getCartesianY() - this.getCartesianY(), 2))
+				+ (Math.pow(comparisonCoordinate.getCartesianZ() - this.getCartesianZ(), 2)));
+	}
+	
+	/**
+	 * 
+	 * @param comparisonCoordinate
+	 * @throws IllegalArgumentException
+	 * @methodtype assertion
+	 */
+	public static void assertIsValidInstanceOfCoordinate(Coordinate comparisonCoordinate)
+			throws IllegalArgumentException {
+		if (!(comparisonCoordinate instanceof AbstractCoordinate)) {
+			throw new IllegalArgumentException("invalid Coordinate Type:" + comparisonCoordinate);
+		}
 
+	}
+	
+	/**
+	 * 
+	 * @param comparisonCoordinate
+	 * @throws NullPointerException
+	 * @methodtype assertion
+	 */
+	public static void assertIsNonNullArgument(Coordinate comparisonCoordinate) throws NullPointerException {
+		if (comparisonCoordinate == null) {
+			throw new NullPointerException();
+		}
+	}
+	
+	/**
+	 * assertion method for Invariants
+	 * currently not used --> might be needed for future implementations
+	 */
+	public static void assertClassInvariants() {
+	}
+	
 	/**
 	 * @param comparisonCoordinate
 	 * @return boolean
 	 * @methodtype boolean query
 	 */
 	public boolean isEqual(Coordinate comparisonCoordinate) {
-		if (this == null || comparisonCoordinate == null) {
-			return false;
-		} else if (comparisonCoordinate == this) {
+		
+		assertIsNonNullArgument(comparisonCoordinate);
+		if (comparisonCoordinate == this) {
 			return true;
-		} else if (doIsEqualWithDeviation(comparisonCoordinate.asCartesian().getX(), this.asCartesian().getX())
-				&& doIsEqualWithDeviation(comparisonCoordinate.asCartesian().getY(), this.asCartesian().getY())
-				&& doIsEqualWithDeviation(comparisonCoordinate.asCartesian().getZ(), this.asCartesian().getZ()))
+		} else if (doIsEqualWithDeviation(comparisonCoordinate.getCartesianX(), this.getCartesianX())
+				&& doIsEqualWithDeviation(comparisonCoordinate.getCartesianY(), this.getCartesianY())
+				&& doIsEqualWithDeviation(comparisonCoordinate.getCartesianZ(), this.getCartesianZ()))
 			return true;
 		return false;
 	}
-	
+
 	/**
 	 * 
 	 * @param x
@@ -75,4 +117,5 @@ public abstract class AbstractCoordinate implements Coordinate {
 			return true;
 		return false;
 	}
+	
 }
