@@ -10,7 +10,8 @@ import org.junit.runner.RunWith;
 		GenderTest.class,
 		GuestTest.class,
 		LocationTest.class,
-		CoordinateTest.class,
+		CartesianCoordinateTest.class,
+		SphericCoordinateTest.class,
 		MountainPhotoFactoryTest.class,
 		MountainPhotoManagerTest.class,
 		MountainPhotoTest.class,
@@ -18,6 +19,7 @@ import org.junit.runner.RunWith;
 		TagsTest.class,
 		UserStatusTest.class, 
 		ValueTest.class	
+		
 	})
 
 /**

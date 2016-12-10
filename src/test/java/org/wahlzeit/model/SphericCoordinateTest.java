@@ -1,36 +1,10 @@
-/*
- * Copyright (c) 2006-2009 by Dirk Riehle, http://dirkriehle.com
- *
- * This file is part of the Wahlzeit photo rating application.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public
- * License along with this program. If not, see
- * <http://www.gnu.org/licenses/>.
- */
-
 package org.wahlzeit.model;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-/**
- * 
- * class to test the Coordinate classes
- *
- */
-public class CoordinateTest {
-	
+public class SphericCoordinateTest {
 	SphericCoordinate sphericCoor;
 	CartesianCoordinate cartesianCoor;
 	
@@ -47,32 +21,10 @@ public class CoordinateTest {
 	 * 
 	 */
 	@Test
-	public void constructorTestCartesianCoordinate() {
-		Assert.assertNotNull(cartesianCoor);
-	}
-	
-	/**
-	 * 
-	 */
-	@Test
 	public void constructorTestSphericalCoordinate() {
 		Assert.assertNotNull(sphericCoor);
 	}
-	
-	/**
-	 * 
-	 */
-	@Test
-	public void setterGetterTestCartesianCoordinate() {
-		//Cartesian Coordinates of the North Pole
-		cartesianCoor.setX(0);
-		cartesianCoor.setY(0);
-		cartesianCoor.setZ(6371);
-		Assert.assertEquals(cartesianCoor.getCartesianX(), 0.0, 0);
-		Assert.assertEquals(cartesianCoor.getCartesianY(), 0.0, 0);
-		Assert.assertEquals(cartesianCoor.getCartesianZ(), 6371, 0);
-	}
-	
+		
 	/**
 	 * 
 	 */
@@ -160,6 +112,15 @@ public class CoordinateTest {
 		Assert.assertEquals(cartesianCoor.getCartesianX(), sphericCoor.getCartesianX(), 0.001);
 		Assert.assertEquals(cartesianCoor.getCartesianY(), sphericCoor.getCartesianY(), 0.001);
 		Assert.assertEquals(cartesianCoor.getCartesianZ(), sphericCoor.getCartesianZ(), 0.001);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test (expected = NullPointerException.class)
+	public void nullArgumentForDistanceTest() {
+		sphericCoor = new SphericCoordinate(90, 0);
+		sphericCoor.getDistance(null);
 	}
 	
 	/**

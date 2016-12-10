@@ -27,6 +27,8 @@ package org.wahlzeit.model;
  */
 public abstract class AbstractCoordinate implements Coordinate {
 
+	
+	
 	/**
 	 * calculates the distance between to Coordinates
 	 * 
@@ -37,11 +39,22 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 */
 	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
 		assertIsNonNullArgument(comparisonCoordinate);
-		assertIsValidInstanceOfCoordinate(comparisonCoordinate);
-		double distance = 0;
+		double distance;
 		distance = doCalculateDistance(comparisonCoordinate);
+		assertDistanceNotNegative(distance);
 		assertClassInvariants();
 		return distance;
+	}
+	
+	/**
+	 * 
+	 * @param distance
+	 * @throws IllegalArgumentException
+	 * @methodtype assertion
+	 */
+	public void assertDistanceNotNegative(double distance) throws IllegalArgumentException {
+		if(distance < 0) 
+			throw new IllegalArgumentException ("Distance should not be negativ!" + distance);
 	}
 	
 	/**
@@ -57,17 +70,15 @@ public abstract class AbstractCoordinate implements Coordinate {
 	
 	/**
 	 * 
-	 * @param comparisonCoordinate
+	 * @param value
 	 * @throws IllegalArgumentException
 	 * @methodtype assertion
 	 */
-	public static void assertIsValidInstanceOfCoordinate(Coordinate comparisonCoordinate)
-			throws IllegalArgumentException {
-		if (!(comparisonCoordinate instanceof AbstractCoordinate)) {
-			throw new IllegalArgumentException("invalid Coordinate Type:" + comparisonCoordinate);
-		}
-
+	public void assertIsValidDoubleRange(double value) throws IllegalArgumentException{
+		if(Double.isInfinite(value) || Double.isNaN(value))
+			throw new IllegalArgumentException ("Double value is not valid" + value);
 	}
+	
 	
 	/**
 	 * 
@@ -85,7 +96,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * assertion method for Invariants
 	 * currently not used --> might be needed for future implementations
 	 */
-	public static void assertClassInvariants() {
+	public void assertClassInvariants() {
+		
 	}
 	
 	/**
@@ -94,7 +106,6 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @methodtype boolean query
 	 */
 	public boolean isEqual(Coordinate comparisonCoordinate) {
-		
 		assertIsNonNullArgument(comparisonCoordinate);
 		if (comparisonCoordinate == this) {
 			return true;

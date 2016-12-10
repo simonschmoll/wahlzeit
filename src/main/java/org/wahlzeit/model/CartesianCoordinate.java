@@ -86,6 +86,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype setter
 	 */
 	public void setX(double x) {
+		assertIsValidDoubleRange(x);
 		this.x = x;
 	}
 
@@ -95,6 +96,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype setter
 	 */
 	public void setY(double y) {
+		assertIsValidDoubleRange(y);
 		this.y = y;
 	}
 
@@ -104,6 +106,7 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @methodtype setter
 	 */
 	public void setZ(double z) {
+		assertIsValidDoubleRange(z);
 		this.z = z;
 	}	 
 }

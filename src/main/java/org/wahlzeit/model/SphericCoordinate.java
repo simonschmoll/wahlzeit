@@ -62,6 +62,13 @@ public class SphericCoordinate extends AbstractCoordinate {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.radius = radius;
+		assertClassInvariants();
+	}
+	
+	public void assertClassInvariants() {
+		assertIsValidLatitude(latitude);
+		assertIsValidLongitude(longitude);
+		assertIsValidRadius(radius);
 	}
 	
 	/**
@@ -75,6 +82,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 			throw new IllegalArgumentException("Invalid Parameter for Latitude: " + latitude);
 		} 
 	}
+	
+	
 	
 	/**
 	 * 
@@ -154,6 +163,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @methodtype setter
 	 */
 	public void setRadius(double radius) {
+		assertIsValidDoubleRange(radius);
 		assertIsValidRadius(radius);
 		this.radius = radius;
 	}
