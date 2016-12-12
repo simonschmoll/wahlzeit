@@ -211,4 +211,17 @@ public class SphericCoordinateTest {
 		Assert.assertFalse(sphericCoor.isEqual(cartesianCoor2));
 		Assert.assertFalse(sphericCoor2.isEqual(cartesianCoor));
 	}
+	
+	/**
+	 * 
+	 * @throws SphericParametersInvalidException
+	 * @throws NullCoordinateException
+	 */
+	@Test (expected = NullCoordinateException.class)
+	public void isEqualWithNullObject () throws SphericParametersInvalidException, NullCoordinateException {
+		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
+		sphericCoor.isEqual(null);
+	}
+	
+	
 }

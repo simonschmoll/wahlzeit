@@ -134,4 +134,10 @@ public class CartesianCoordinateTest {
 		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
 		Assert.assertTrue(cartesianCoor.isEqual(cartesianCoor2));
 	}
+	
+	@Test (expected = NullCoordinateException.class)
+	public void distanceWithNullParameter () throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
+		cartesianCoor.getDistance(null);
+	}
 }
