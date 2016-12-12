@@ -23,6 +23,8 @@ package org.wahlzeit.model;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
+import org.wahlzeit.exceptionhandling.NullCoordinateException;
+import org.wahlzeit.exceptionhandling.SphericParametersInvalidException;
 
 public class LocationTest {
 
@@ -30,20 +32,23 @@ public class LocationTest {
 	Location testLocationCartesian;
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws NullCoordinateException 
 	 *
 	 */
 	@Test
-	public void constructorTestSpheric() {
+	public void constructorTestSpheric() throws SphericParametersInvalidException, NullCoordinateException {
 		SphericCoordinate testCoordinate = new SphericCoordinate(0,0);
 		testLocationSpheric = new Location(testCoordinate);
 		assertNotNull(testLocationSpheric);
 	}
 	
 	/**
+	 * @throws NullCoordinateException 
 	 *
 	 */
 	@Test
-	public void constructorTestCartesian() {
+	public void constructorTestCartesian() throws NullCoordinateException {
 		CartesianCoordinate testCoordinate = new CartesianCoordinate(0,0, 6371);
 		testLocationCartesian = new Location(testCoordinate);
 		assertNotNull(testLocationCartesian);

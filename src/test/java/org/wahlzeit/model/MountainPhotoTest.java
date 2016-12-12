@@ -22,6 +22,8 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.rules.RuleChain;
+import org.wahlzeit.exceptionhandling.IllegalHeightMountainException;
+import org.wahlzeit.model.mountain.MountainAltitudinalBelt;
 import org.wahlzeit.model.mountain.MountainPhoto;
 import org.wahlzeit.model.mountain.MountainPhotoManager;
 import org.wahlzeit.testEnvironmentProvider.LocalDatastoreServiceTestConfigProvider;
@@ -47,12 +49,14 @@ public class MountainPhotoTest {
 	public static RuleChain ruleChain = RuleChain.outerRule(new LocalDatastoreServiceTestConfigProvider());
 
 	/**
+	 * @throws IllegalHeightMountainException 
 	 * 
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws IllegalHeightMountainException {
 		MountainPhotoManager.getInstance();
-		testPlainMountain.setAltitudinalBelt("flat country");
+		String test = "default";
+		testPlainMountain.setAltitudinalBelt(test);
 		testPlainMountain.setMountainHeight(HEIGHT_PLAIN_MOUNTAIN);
 	}
 
@@ -62,7 +66,7 @@ public class MountainPhotoTest {
 	@Test
 	public void getterTest() {
 		Assert.assertEquals(HEIGHT_PLAIN_MOUNTAIN, testPlainMountain.getMountainHeight(), 0.001);
-		Assert.assertEquals("flat country", testPlainMountain.getAltitudinalBelt());
+		Assert.assertEquals("default", testPlainMountain.getAltitudinalBelt());
 	}
 
 	/**
@@ -77,27 +81,31 @@ public class MountainPhotoTest {
 	}
 
 	/**
+	 * @throws IllegalHeightMountainException 
 	 * 
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void invalidParameterNegativHeightTest() {
+	@Test(expected = IllegalHeightMountainException.class)
+	public void invalidParameterNegativHeightTest() throws IllegalHeightMountainException {
 		testPlainMountain.setMountainHeight(-1);
 	}
 
 	/**
+	 * @throws IllegalHeightMountainException 
 	 * 
 	 */
-	@Test(expected = IllegalArgumentException.class)
-	public void invalidParameterTooBigHeightTest() {
+	@Test(expected = IllegalHeightMountainException.class)
+	public void invalidParameterTooBigHeightTest() throws IllegalHeightMountainException {
 		testPlainMountain.setMountainHeight(8851);
 	}
-
+	
 	/**
 	 * 
 	 */
 	@Test(expected = IllegalArgumentException.class)
-	public void invalidParameterAltitudinalBeltTest() {
-		testPlainMountain.setAltitudinalBelt("");
+	public void invalidParameterAltitude() {
+		String test = "";
+		testPlainMountain.setAltitudinalBelt(test);
 	}
+	
 
 }

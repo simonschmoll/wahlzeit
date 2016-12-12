@@ -3,16 +3,21 @@ package org.wahlzeit.model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
+import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
+import org.wahlzeit.exceptionhandling.NullCoordinateException;
+import org.wahlzeit.exceptionhandling.SphericParametersInvalidException;
 
 public class SphericCoordinateTest {
 	SphericCoordinate sphericCoor;
 	CartesianCoordinate cartesianCoor;
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
 	@Before
-	public void setUp() {
+	public void setUp() throws SphericParametersInvalidException {
 		sphericCoor = new SphericCoordinate(1,1);
 		cartesianCoor = new CartesianCoordinate(1,1, 6371);
 	}
@@ -26,10 +31,12 @@ public class SphericCoordinateTest {
 	}
 		
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws DoubleOutOfRangeException 
 	 * 
 	 */
 	@Test
-	public void setterGetterTestSphericCoordinate() {
+	public void setterGetterTestSphericCoordinate() throws SphericParametersInvalidException, DoubleOutOfRangeException {
 		sphericCoor.setLatitude(90);
 		sphericCoor.setLongitude(0);
 		sphericCoor.setRadius(6000);
@@ -39,74 +46,83 @@ public class SphericCoordinateTest {
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLatitude() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void constructorInvalidParameterSphericLatitude() throws SphericParametersInvalidException {
 		sphericCoor = new SphericCoordinate(91, 0);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLatitude2() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void constructorInvalidParameterSphericLatitude2() throws SphericParametersInvalidException {
 		sphericCoor = new SphericCoordinate(-91, 0);
 	}	
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLongitude() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void constructorInvalidParameterSphericLongitude() throws SphericParametersInvalidException {
 		sphericCoor = new SphericCoordinate(0, 181);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLongitude2() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void constructorInvalidParameterSphericLongitude2() throws SphericParametersInvalidException {
 		sphericCoor = new SphericCoordinate(0, -181);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLatitude() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void setterInvalidParameterSphericLatitude() throws SphericParametersInvalidException {
 		sphericCoor.setLatitude(91);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLatitude2() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void setterInvalidParameterSphericLatitude2() throws SphericParametersInvalidException {
 		sphericCoor.setLatitude(-91);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLongitude() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void setterInvalidParameterSphericLongitude() throws SphericParametersInvalidException {
 		sphericCoor.setLongitude(181);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLongitude2() {
+	@Test (expected = SphericParametersInvalidException.class)
+	public void setterInvalidParameterSphericLongitude2() throws SphericParametersInvalidException {
 		sphericCoor.setLatitude(-181);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
 	@Test
-	public void conversionSphericToCartesianTest() {
+	public void conversionSphericToCartesianTest() throws SphericParametersInvalidException {
 		sphericCoor = new SphericCoordinate(90, 0);
 		cartesianCoor = new CartesianCoordinate(0, 0, 6371);
 		Assert.assertEquals(cartesianCoor.getCartesianX(), sphericCoor.getCartesianX(), 0.001);
@@ -115,19 +131,27 @@ public class SphericCoordinateTest {
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws DoubleOutOfRangeException 
+	 * @throws IllegalParameterDistanceException 
+	 * @throws NullCoordinateException 
 	 * 
 	 */
-	@Test (expected = NullPointerException.class)
-	public void nullArgumentForDistanceTest() {
+	@Test (expected = NullCoordinateException.class)
+	public void nullArgumentForDistanceTest() throws SphericParametersInvalidException, NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
 		sphericCoor = new SphericCoordinate(90, 0);
 		sphericCoor.getDistance(null);
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws DoubleOutOfRangeException 
+	 * @throws IllegalParameterDistanceException 
+	 * @throws NullCoordinateException 
 	 * 
 	 */
 	@Test
-	public void distanceTestSameCoordinateType() {
+	public void distanceTestSameCoordinateType() throws SphericParametersInvalidException, NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
 		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
 		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
 		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
@@ -140,10 +164,14 @@ public class SphericCoordinateTest {
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws DoubleOutOfRangeException 
+	 * @throws IllegalParameterDistanceException 
+	 * @throws NullCoordinateException 
 	 * 
 	 */
 	@Test
-	public void distanceTestDifferentCoordinateTypes() {
+	public void distanceTestDifferentCoordinateTypes() throws SphericParametersInvalidException, NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
 		SphericCoordinate sphericCoor = new SphericCoordinate (90, 0);
 		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
 		double resultExpected = 2*6371;
@@ -155,10 +183,12 @@ public class SphericCoordinateTest {
 	}	
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws NullCoordinateException 
 	 * 
 	 */
 	@Test
-	public void isEqualTest() {
+	public void isEqualTest() throws SphericParametersInvalidException, NullCoordinateException {
 		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
 		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
 		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
@@ -168,10 +198,12 @@ public class SphericCoordinateTest {
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws NullCoordinateException 
 	 * 
 	 */
 	@Test
-	public void isEqualTest2() {
+	public void isEqualTest2() throws SphericParametersInvalidException, NullCoordinateException {
 		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
 		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
 		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);

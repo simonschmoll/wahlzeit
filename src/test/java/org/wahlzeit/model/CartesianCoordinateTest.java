@@ -23,6 +23,10 @@ package org.wahlzeit.model;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
+import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
+import org.wahlzeit.exceptionhandling.NullCoordinateException;
+import org.wahlzeit.exceptionhandling.SphericParametersInvalidException;
 
 /**
  * 
@@ -53,10 +57,11 @@ public class CartesianCoordinateTest {
 
 	
 	/**
+	 * @throws DoubleOutOfRangeException 
 	 * 
 	 */
 	@Test
-	public void setterGetterTestCartesianCoordinate() {
+	public void setterGetterTestCartesianCoordinate() throws DoubleOutOfRangeException {
 		//Cartesian Coordinates of the North Pole
 		cartesianCoor.setX(0);
 		cartesianCoor.setY(0);
@@ -68,10 +73,11 @@ public class CartesianCoordinateTest {
 	
 	
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * 
 	 */
 	@Test
-	public void conversionSphericToSphericTest() {
+	public void conversionSphericToSphericTest() throws SphericParametersInvalidException {
 		sphericCoor = new SphericCoordinate(90, 0);
 		cartesianCoor = new CartesianCoordinate(0, 0, 6371);
 		Assert.assertEquals(sphericCoor.getCartesianX(), cartesianCoor.getCartesianX(), 0.001);
@@ -80,10 +86,14 @@ public class CartesianCoordinateTest {
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws DoubleOutOfRangeException 
+	 * @throws IllegalParameterDistanceException 
+	 * @throws NullCoordinateException 
 	 * 
 	 */
 	@Test
-	public void distanceTestSameCoordinateType() {
+	public void distanceTestSameCoordinateType() throws SphericParametersInvalidException, NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
 		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
 		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
 		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
@@ -96,10 +106,14 @@ public class CartesianCoordinateTest {
 	}
 	
 	/**
+	 * @throws SphericParametersInvalidException 
+	 * @throws DoubleOutOfRangeException 
+	 * @throws IllegalParameterDistanceException 
+	 * @throws NullCoordinateException 
 	 * 
 	 */
 	@Test
-	public void distanceTestDifferentCoordinateTypes() {
+	public void distanceTestDifferentCoordinateTypes() throws SphericParametersInvalidException, NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
 		SphericCoordinate sphericCoor = new SphericCoordinate (90, 0);
 		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
 		double resultExpected = 2*6371;
@@ -111,10 +125,11 @@ public class CartesianCoordinateTest {
 	}	
 	
 	/**
+	 * @throws NullCoordinateException 
 	 * 
 	 */
 	@Test
-	public void isEqualTest() {
+	public void isEqualTest() throws NullCoordinateException {
 		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
 		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
 		Assert.assertTrue(cartesianCoor.isEqual(cartesianCoor2));
