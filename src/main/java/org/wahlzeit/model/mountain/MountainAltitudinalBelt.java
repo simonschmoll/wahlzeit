@@ -29,7 +29,7 @@ import org.wahlzeit.utils.EnumValue;
  */
 public enum MountainAltitudinalBelt implements EnumValue {
 
-	DEFAULT(0), FLAT_COUNTRY(1), HILL_COUNTRY(2), LOW_MOUNTAIN_RANGE(3), MOUNTAIN_RANGE(4), HIGH_MOUNTAIN_RANGE(5);
+	DEFAULT, FLAT_COUNTRY, HILL_COUNTRY, LOW_MOUNTAIN_RANGE, MOUNTAIN_RANGE, HIGH_MOUNTAIN_RANGE;
 
 	/**
 	 * All possible states of the mountain altitudinal belt and one additional
@@ -42,25 +42,10 @@ public enum MountainAltitudinalBelt implements EnumValue {
 	 * 
 	 * @param value
 	 * @return value as Integer
-	 * @throws IllegalArgumentException
 	 * @methodtype conversion
 	 */
-	public static MountainAltitudinalBelt getAsInt(int value) throws IllegalArgumentException {
-		assertIsValidMountainHeight(value);
+	public static MountainAltitudinalBelt getAsInt(int value) {
 		return allAltitudinalBelts[value];
-	}
-
-	/**
-	 * 
-	 * @param value
-	 * @throws IllegalArgumentException
-	 * @methodtype assertion
-	 * 
-	 */
-	protected static void assertIsValidMountainHeight(int value) throws IllegalArgumentException {
-		if ((value < 0) || (value > 5)) {
-			throw new IllegalArgumentException("invalid height: " + value);
-		}
 	}
 
 	/**
@@ -72,25 +57,16 @@ public enum MountainAltitudinalBelt implements EnumValue {
 	/**
 	 *
 	 */
-	public static MountainAltitudinalBelt getFromString(String sValue) throws IllegalArgumentException {
+	public static MountainAltitudinalBelt getFromString(String sValue) {
 		for (MountainAltitudinalBelt value : MountainAltitudinalBelt.values()) {
 			if (AltitudinalBeltsNames[value.asInt()].equals(sValue)) {
 				return value;
 			}
 		}
-
 		throw new IllegalArgumentException("invalid AltitudinalBeltsName string: " + sValue);
 	}
 
 	private int value = 0;
-
-	/**
-	 * 
-	 * @param newValue
-	 */
-	MountainAltitudinalBelt(int newValue) {
-		value = newValue;
-	}
 
 	/**
 	 * 

@@ -20,6 +20,11 @@
 
 package org.wahlzeit.model.mountain;
 
+import static java.util.logging.Level.SEVERE;
+
+import java.util.logging.Logger;
+
+import org.wahlzeit.exceptionhandling.IllegalHeightMountainException;
 import org.wahlzeit.model.Location;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
@@ -34,6 +39,8 @@ import com.googlecode.objectify.annotation.Subclass;
 @Subclass
 public class MountainPhoto extends Photo {
 
+	private static final Logger LOG = Logger.getLogger(MountainPhoto.class.getName());
+	
 	private MountainAltitudinalBelt altitudinalBelt;
 	private double height = 0;
 	
@@ -44,7 +51,7 @@ public class MountainPhoto extends Photo {
 	 */
 	public MountainPhoto() {
 		super();
-		this.altitudinalBelt = MountainAltitudinalBelt.getFromString("default");
+		this.altitudinalBelt = MountainAltitudinalBelt.DEFAULT;
 	}
 
 	/**
@@ -53,34 +60,48 @@ public class MountainPhoto extends Photo {
 	 * 
 	 * @methodtype constructor
 	 */
-	public MountainPhoto(PhotoId id) {
+	public MountainPhoto(PhotoId id){
 		super(id);
-		this.altitudinalBelt = MountainAltitudinalBelt.getFromString("default");
+		this.altitudinalBelt = MountainAltitudinalBelt.DEFAULT;
 	}
 
 	/**
 	 * 
 	 * @param id
 	 * @param height
+	 * @throws IllegalHeightMountainException 
 	 * 
 	 * @methodtype constructor
 	 */
-	public MountainPhoto(PhotoId id, double height, String altitudinalBelt) {
+	public MountainPhoto(PhotoId id, double height, String altitudinalBelt) throws IllegalHeightMountainException {
 		super(id);
+		assertIsValidHeight(height);
 		this.altitudinalBelt = MountainAltitudinalBelt.getFromString(altitudinalBelt);
 		this.height = height;
 	}
 
 	/**
 	 * 
-	 * @param newAltitudinalBelt
+	 * @param altitudinalBelt
 	 * 
 	 * @methodtype set
 	 */
-	public void setAltitudinalBelt(String newAltitudinalBelt) {
-		this.altitudinalBelt = MountainAltitudinalBelt.getFromString(newAltitudinalBelt);
+	public void setAltitudinalBelt(String altitudinalBelt) {
+		this.altitudinalBelt = MountainAltitudinalBelt.getFromString(altitudinalBelt);
 	}
 
+	/**
+	 * 
+	 * @param newHeight
+	 * @throws IllegalHeightMountainException 
+	 * 
+	 * @methodtype set
+	 */
+	public void setMountainHeight(double newHeight) throws IllegalHeightMountainException {
+		assertIsValidHeight(newHeight);
+		this.height = newHeight;
+	}
+	
 	/**
 	 * @return altitudinal belt as a string
 	 * 
@@ -91,17 +112,6 @@ public class MountainPhoto extends Photo {
 			return null;
 		}
 		return altitudinalBelt.asString();
-	}
-
-	/**
-	 * 
-	 * @param newHeight
-	 * 
-	 * @methodtype set
-	 */
-	public void setMountainHeight(double newHeight) {
-		assertIsValidHeight(newHeight);
-		this.height = newHeight;
 	}
 
 	/**
@@ -116,17 +126,19 @@ public class MountainPhoto extends Photo {
 	/**
 	 * 
 	 * @param height
-	 * @throws IllegalArgumentException
+	 * @throws IllegalHeightMountainException
 	 * 
 	 * @metodtype assertion
 	 */
-	public void assertIsValidHeight(double height) throws IllegalArgumentException {
+	public void assertIsValidHeight(double height) throws IllegalHeightMountainException {
 		// this is necessary because the highest mountain - regarding the
 		// elevation above sea level-
 		// is Mount Everest with 8850 metres and there is no mountain defined
 		// under 0 metres
 		if (height < 0 || height > 8850) {
-			throw new IllegalArgumentException("The height of the mountain is invalid" + height);
+			String exceptionMsg = "Illegal parameter for Mountain Height!";
+			LOG.log(SEVERE, exceptionMsg);
+			throw new IllegalHeightMountainException(exceptionMsg + height);
 		}
 	}
 }
