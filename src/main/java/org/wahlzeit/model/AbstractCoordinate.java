@@ -20,6 +20,11 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
+import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
+import org.wahlzeit.exceptionhandling.NullCoordinateException;
+import org.wahlzeit.exceptionhandling.SphericParametersInvalidException;
+
 /**
  * 
  * abstract Superclass for Coordinates
@@ -27,8 +32,6 @@ package org.wahlzeit.model;
  */
 public abstract class AbstractCoordinate implements Coordinate {
 
-	
-	
 	/**
 	 * calculates the distance between to Coordinates
 	 * 
@@ -37,24 +40,13 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return direct distance between two Coordinates
 	 * 
 	 */
-	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException {
+	public double getDistance(Coordinate comparisonCoordinate) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+		double distance = 0;
 		assertIsNonNullArgument(comparisonCoordinate);
-		double distance;
 		distance = doCalculateDistance(comparisonCoordinate);
 		assertDistanceNotNegative(distance);
 		assertClassInvariants();
 		return distance;
-	}
-	
-	/**
-	 * 
-	 * @param distance
-	 * @throws IllegalArgumentException
-	 * @methodtype assertion
-	 */
-	public void assertDistanceNotNegative(double distance) throws IllegalArgumentException {
-		if(distance < 0) 
-			throw new IllegalArgumentException ("Distance should not be negativ!" + distance);
 	}
 	
 	/**
@@ -69,53 +61,21 @@ public abstract class AbstractCoordinate implements Coordinate {
 	}
 	
 	/**
-	 * 
-	 * @param value
-	 * @throws IllegalArgumentException
-	 * @methodtype assertion
-	 */
-	public void assertIsValidDoubleRange(double value) throws IllegalArgumentException{
-		if(Double.isInfinite(value) || Double.isNaN(value))
-			throw new IllegalArgumentException ("Double value is not valid" + value);
-	}
-	
-	
-	/**
-	 * 
-	 * @param comparisonCoordinate
-	 * @throws NullPointerException
-	 * @methodtype assertion
-	 */
-	public static void assertIsNonNullArgument(Coordinate comparisonCoordinate) throws NullPointerException {
-		if (comparisonCoordinate == null) {
-			throw new NullPointerException();
-		}
-	}
-	
-	/**
-	 * assertion method for Invariants
-	 * currently not used --> might be needed for future implementations
-	 */
-	public void assertClassInvariants() {
-		
-	}
-	
-	/**
 	 * @param comparisonCoordinate
 	 * @return boolean
 	 * @methodtype boolean query
 	 */
-	public boolean isEqual(Coordinate comparisonCoordinate) {
+	public boolean isEqual(Coordinate comparisonCoordinate) throws NullCoordinateException {
 		assertIsNonNullArgument(comparisonCoordinate);
 		if (comparisonCoordinate == this) {
 			return true;
 		} else if (doIsEqualWithDeviation(comparisonCoordinate.getCartesianX(), this.getCartesianX())
-				&& doIsEqualWithDeviation(comparisonCoordinate.getCartesianY(), this.getCartesianY())
-				&& doIsEqualWithDeviation(comparisonCoordinate.getCartesianZ(), this.getCartesianZ()))
+			&& doIsEqualWithDeviation(comparisonCoordinate.getCartesianY(), this.getCartesianY())
+			&& doIsEqualWithDeviation(comparisonCoordinate.getCartesianZ(), this.getCartesianZ()))
 			return true;
 		return false;
 	}
-
+	
 	/**
 	 * 
 	 * @param x
@@ -129,4 +89,47 @@ public abstract class AbstractCoordinate implements Coordinate {
 		return false;
 	}
 	
+	/**
+	 * 
+	 * @param distance
+	 * @throws IllegalParameterDistanceException
+	 * @methodtype assertion
+	 */
+	public void assertDistanceNotNegative(double distance) throws IllegalParameterDistanceException{
+		if(distance < 0) 
+			throw new IllegalParameterDistanceException ("Distance must not be negativ!" + distance);
+	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @throws DoubleOutOfRangeException
+	 * @methodtype assertion
+	 */
+	public void assertIsValidDoubleRange(double value) throws DoubleOutOfRangeException{
+		if(Double.isInfinite(value) || Double.isNaN(value))
+			throw new DoubleOutOfRangeException ("Double value is not valid" + value);
+		}
+	
+	
+	/**
+	 * 
+	 * @param comparisonCoordinate
+	 * @throws NullCoordinateException
+	 * @methodtype assertion
+	 */
+	public static void assertIsNonNullArgument(Coordinate comparisonCoordinate)throws NullCoordinateException{
+		if (comparisonCoordinate == null) {
+			throw new NullCoordinateException("Coordinate must not be null!");
+		}
+	}
+	
+	/**
+	 * assertion method for Invariants
+	 * currently not used --> might be needed for future implementations
+	 * @throws  
+	 */
+	public void assertClassInvariants() {
+		
+	}	
 }

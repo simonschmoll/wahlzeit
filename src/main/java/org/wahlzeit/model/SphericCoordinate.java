@@ -20,6 +20,15 @@
 
 package org.wahlzeit.model;
 
+import static java.util.logging.Level.SEVERE;
+
+import java.util.logging.Logger;
+
+import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
+import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
+import org.wahlzeit.exceptionhandling.NullCoordinateException;
+import org.wahlzeit.exceptionhandling.SphericParametersInvalidException;
+
 /**
  * 
  * class to represent a Spheric Coordinate
@@ -27,6 +36,8 @@ package org.wahlzeit.model;
  */
 public class SphericCoordinate extends AbstractCoordinate {
 
+	private static final Logger LOG = Logger.getLogger(SphericCoordinate.class.getName());
+	
 	private double latitude;
 	private double longitude;
 	private double radius;
@@ -46,29 +57,35 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * @methodtype constructor
 	 */
-	public SphericCoordinate(double latitude, double longitude) {
+	public SphericCoordinate(double latitude, double longitude) throws SphericParametersInvalidException {
 		this(latitude, longitude, EARTHRADIUS_KM);
 	}
 
 	/**
+	 * @throws SphericParametersInvalidException 
 	 * @methodtype constructor
 	 */
-	public SphericCoordinate(double latitude, double longitude, double radius) {
-		assertIsValidLatitude(latitude);
-		assertIsValidLongitude(longitude);
-		assertIsValidRadius(radius);
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.radius = radius;
-		assertClassInvariants();
+	public SphericCoordinate(double latitude, double longitude, double radius) throws SphericParametersInvalidException {
+			assertIsValidLatitude(latitude);
+			assertIsValidLongitude(longitude);
+			assertIsValidRadius(radius);	
+			this.latitude = latitude;
+			this.longitude = longitude;
+			this.radius = radius;	
+			assertClassSphericInvariants();
 	}
 	
-	public void assertClassInvariants() {
-		assertIsValidLatitude(latitude);
-		assertIsValidLongitude(longitude);
-		assertIsValidRadius(radius);
+	/**
+	 * 
+	 * @throws SphericParametersInvalidException
+	 */
+	public void assertClassSphericInvariants() throws SphericParametersInvalidException{
+			assertIsValidLatitude(latitude);
+			assertIsValidLongitude(longitude);
+			assertIsValidRadius(radius);
 	}
 	
 	/**
@@ -77,9 +94,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @throws IllegalArgumentException
 	 * @methodtype assertion
 	 */
-	public static void assertIsValidLatitude(double latitude) throws IllegalArgumentException {
+	public static void assertIsValidLatitude(double latitude) throws SphericParametersInvalidException {
 		if (( latitude < MINLATITUDE ) || ( latitude > MAXLATITUDE)) {
-			throw new IllegalArgumentException("Invalid Parameter for Latitude: " + latitude);
+			String exceptionMsg = "Illegal latitude Parameter for Spheric Coordinate";
+			LOG.log(SEVERE, exceptionMsg);
+			throw new SphericParametersInvalidException(exceptionMsg);
 		} 
 	}
 	
@@ -91,9 +110,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @throws IllegalArgumentException
 	 * @methodtype assertion
 	 */
-	public static void assertIsValidLongitude(double longitude) throws IllegalArgumentException {
+	public static void assertIsValidLongitude(double longitude) throws SphericParametersInvalidException {
 		if((longitude < MINLONGITUDE ) || (longitude > MAXLONGITUDE)) {
-			throw new IllegalArgumentException("Invalid Parameter for Longitude: " + longitude);
+			String exceptionMsg = "Illegal longitude Parameter for Spheric Coordinate";
+			LOG.log(SEVERE, exceptionMsg);
+			throw new SphericParametersInvalidException(exceptionMsg);
 		}
 	}
 	
@@ -103,13 +124,44 @@ public class SphericCoordinate extends AbstractCoordinate {
 	 * @throws IllegalArgumentException
 	 * @methodtype assertion
 	 */
-	public static void assertIsValidRadius (double radius) throws IllegalArgumentException{
+	public static void assertIsValidRadius (double radius) throws SphericParametersInvalidException{
 		if (radius <= 0) {
-			throw new IllegalArgumentException("Radius must be greater than zero");
+			String exceptionMsg = "Illegal radius Parameter for Spheric Coordinate";
+			LOG.log(SEVERE, exceptionMsg);
+			throw new SphericParametersInvalidException(exceptionMsg);
 		}
 	}
 	
-
+	@Override
+	public double getDistance(Coordinate comparisonCoordinate) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+		double distance = 0;
+		try {
+			distance = super.getDistance(comparisonCoordinate);
+		} catch (NullCoordinateException nullObject) {
+			LOG.log(SEVERE, nullObject.getMessage());
+			throw new NullCoordinateException(nullObject.getMessage());
+		} catch (IllegalParameterDistanceException illegalArgument) { 
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new IllegalParameterDistanceException(illegalArgument.getMessage());
+		} catch (DoubleOutOfRangeException illegalArgument) { 
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+		}
+		return distance;
+	}
+	
+	@Override
+	public boolean isEqual(Coordinate comparisonCoordinate) throws NullCoordinateException{
+		boolean equal = false;
+		try { 
+			equal = super.isEqual(comparisonCoordinate);
+		} catch (NullCoordinateException illegalArgument) {
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new NullCoordinateException(illegalArgument.getMessage());
+		}
+		return equal;
+	}
+	
 	/**
 	 * 
 	 * @return latitude
@@ -140,9 +192,10 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * 
 	 * @param latitude
+	 * @throws SphericParametersInvalidException 
 	 * @methodtype setter
 	 */
-	public void setLatitude(double latitude) throws IllegalArgumentException{
+	public void setLatitude(double latitude) throws SphericParametersInvalidException{
 		assertIsValidLatitude(latitude);
 		this.latitude = latitude;
 	}
@@ -150,9 +203,10 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * 
 	 * @param longitude
+	 * @throws SphericParametersInvalidException 
 	 * @methodtype setter
 	 */
-	public void setLongitude(double longitude) throws IllegalArgumentException{
+	public void setLongitude(double longitude) throws SphericParametersInvalidException{
 		assertIsValidLongitude(longitude);
 		this.longitude = longitude;
 	}
@@ -160,9 +214,11 @@ public class SphericCoordinate extends AbstractCoordinate {
 	/**
 	 * 
 	 * @param radius
+	 * @throws DoubleOutOfRangeException 
+	 * @throws SphericParametersInvalidException 
 	 * @methodtype setter
 	 */
-	public void setRadius(double radius) {
+	public void setRadius(double radius) throws DoubleOutOfRangeException, SphericParametersInvalidException {
 		assertIsValidDoubleRange(radius);
 		assertIsValidRadius(radius);
 		this.radius = radius;

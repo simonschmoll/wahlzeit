@@ -20,6 +20,13 @@
 
 package org.wahlzeit.model;
 
+import java.util.logging.Logger;
+import static java.util.logging.Level.SEVERE;
+
+import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
+import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
+import org.wahlzeit.exceptionhandling.NullCoordinateException;
+
 import com.googlecode.objectify.annotation.Ignore;
 
 /**
@@ -30,14 +37,17 @@ import com.googlecode.objectify.annotation.Ignore;
 
 public class Location{
 	
+	private static final Logger LOG = Logger.getLogger(Location.class.getName());
+	
 	@Ignore
 	private Coordinate coordinate;
 	public static final Location LOCATION_UNDEFINED = new Location(null);
 	
 	/**
+	 * @throws NullCoordinateException 
 	 * @methodtype constructor
 	 */
-	public Location(Coordinate coordinate) {
+	public Location(Coordinate coordinate){
 		this.coordinate = coordinate;
 	}
 	
@@ -45,10 +55,24 @@ public class Location{
 	 * 
 	 * @param location
 	 * @return distance
+	 * @throws DoubleOutOfRangeException 
+	 * @throws IllegalParameterDistanceException 
+	 * @throws NullCoordinateException 
 	 * @methodtype constructor
 	 */
-	public double getDistance(Location location) {
-		return coordinate.getDistance(location.coordinate);
+	public double getDistance(Location location) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+		try {
+			return coordinate.getDistance(location.coordinate);
+		} catch (NullCoordinateException nullObject) {
+			LOG.log(SEVERE, nullObject.getMessage());
+			throw new NullCoordinateException(nullObject.getMessage());
+		} catch (IllegalParameterDistanceException illegalArgument) { 
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new IllegalParameterDistanceException(illegalArgument.getMessage());
+		} catch (DoubleOutOfRangeException illegalArgument) { 
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+		}
 	}
 	
 	

@@ -20,12 +20,22 @@
 
 package org.wahlzeit.model;
 
+import static java.util.logging.Level.SEVERE;
+
+import java.util.logging.Logger;
+
+import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
+import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
+import org.wahlzeit.exceptionhandling.NullCoordinateException;
+
 /**
  * 
  * a class to represent a Cartesian Coordinate
  *
  */
 public class CartesianCoordinate extends AbstractCoordinate{
+	
+	private static final Logger LOG = Logger.getLogger(CartesianCoordinate.class.getName());
 	
 	private double x;
 	private double y;
@@ -51,6 +61,36 @@ public class CartesianCoordinate extends AbstractCoordinate{
 		this.x = x;
 		this.y = y;
 		this.z = z;
+	}
+	
+	@Override
+	public double getDistance(Coordinate comparisonCoordinate) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+		double distance = 0;
+		try {
+			distance = super.getDistance(comparisonCoordinate);
+		} catch (NullCoordinateException nullObject) {
+			LOG.log(SEVERE, nullObject.getMessage());
+			throw new NullCoordinateException(nullObject.getMessage());
+		} catch (IllegalParameterDistanceException illegalArgument) { 
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new IllegalParameterDistanceException(illegalArgument.getMessage());
+		} catch (DoubleOutOfRangeException illegalArgument) { 
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+		}
+		return distance;
+	}
+	
+	@Override
+	public boolean isEqual(Coordinate comparisonCoordinate) throws NullCoordinateException{
+		boolean equal = false;
+		try { 
+			equal = super.isEqual(comparisonCoordinate);
+		} catch (NullCoordinateException illegalArgument) {
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new NullCoordinateException(illegalArgument.getMessage());
+		}
+		return equal;
 	}
 	
 	/**
@@ -83,30 +123,48 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	/**
 	 * 
 	 * @param x
+	 * @throws DoubleOutOfRangeException 
 	 * @methodtype setter
 	 */
-	public void setX(double x) {
-		assertIsValidDoubleRange(x);
+	public void setX(double x) throws DoubleOutOfRangeException {
+		try {
+			assertIsValidDoubleRange(x);
+		} catch (DoubleOutOfRangeException illegalArgument) {
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+		}
 		this.x = x;
 	}
 
 	/**
 	 * 
 	 * @param y
+	 * @throws DoubleOutOfRangeException 
 	 * @methodtype setter
 	 */
-	public void setY(double y) {
-		assertIsValidDoubleRange(y);
+	public void setY(double y) throws DoubleOutOfRangeException {
+		try {
+			assertIsValidDoubleRange(y);
+		} catch (DoubleOutOfRangeException illegalArgument) {
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+		}
 		this.y = y;
 	}
 
 	/**
 	 * 
 	 * @param z
+	 * @throws DoubleOutOfRangeException 
 	 * @methodtype setter
 	 */
-	public void setZ(double z) {
-		assertIsValidDoubleRange(z);
+	public void setZ(double z) throws DoubleOutOfRangeException {
+		try {
+			assertIsValidDoubleRange(z);
+		} catch (DoubleOutOfRangeException illegalArgument) {
+			LOG.log(SEVERE, illegalArgument.getMessage());
+			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+		}
 		this.z = z;
 	}	 
 }
