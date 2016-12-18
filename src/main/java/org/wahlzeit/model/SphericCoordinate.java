@@ -22,6 +22,7 @@ package org.wahlzeit.model;
 
 import static java.util.logging.Level.SEVERE;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
@@ -33,14 +34,16 @@ public class SphericCoordinate extends AbstractCoordinate {
 
 	private static final Logger LOG = Logger.getLogger(SphericCoordinate.class.getName());
 	
-	private double latitude;
-	private double longitude;
-	private double radius;
+	private final double latitude;
+	private final double longitude;
+	private final double radius;
 	public static final int MAXLATITUDE = 90;
 	public static final int MINLATITUDE = -90;
 	public static final int MAXLONGITUDE = 180;
 	public static final int MINLONGITUDE= -180;
 	private static final double EARTHRADIUS_KM = 6371.0;
+	private static final int MAXIMUM_SIZE = 500;
+	protected static final HashMap<Integer, SphericCoordinate> sphCoordinates = new HashMap<>(MAXIMUM_SIZE); 
 
 	/**
 	 * @methodtype constructor
@@ -52,18 +55,45 @@ public class SphericCoordinate extends AbstractCoordinate {
 	}
 
 	/**
-	 * @throws SphericParametersInvalidException 
-	 * @methodtype constructor
+	 * 
+	 * @return SphericCoordinate
 	 */
-	public SphericCoordinate(double latitude, double longitude) throws IllegalArgumentException {
-		this(latitude, longitude, EARTHRADIUS_KM);
+	public static synchronized SphericCoordinate getInstance() {
+		return getInstance(0, 0, EARTHRADIUS_KM);	
 	}
-
+	
 	/**
-	 * @throws SphericParametersInvalidException 
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @return SphericCoordinate
+	 */
+	public static synchronized SphericCoordinate getInstance(double latitude, double longitude) {
+		return getInstance( latitude, longitude, EARTHRADIUS_KM);
+	}
+	
+	/**
+	 * 
+	 * @param latitude
+	 * @param longitude
+	 * @param radius
+	 * @return SphericCoordinate
+	 */
+	public static synchronized SphericCoordinate getInstance(double latitude, double longitude, double radius) {
+		SphericCoordinate sphericCoor = new SphericCoordinate (latitude, longitude, radius);
+		SphericCoordinate lookUpCoordinate = sphCoordinates.get(sphericCoor.hashCode());
+		if(lookUpCoordinate == null) {
+			sphCoordinates.put(sphericCoor.hashCode(), sphericCoor);
+			return sphericCoor;
+		}
+		return lookUpCoordinate;
+	}
+	
+	/**
+	 * @throws IllegalArgumentException 
 	 * @methodtype constructor
 	 */
-	public SphericCoordinate(double latitude, double longitude, double radius) throws IllegalArgumentException {
+	private SphericCoordinate(double latitude, double longitude, double radius) throws IllegalArgumentException {
 			assertIsValidLatitude(latitude);
 			assertIsValidLongitude(longitude);
 			assertIsValidRadius(radius);	
@@ -75,7 +105,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 	
 	/**
 	 * 
-	 * @throws SphericParametersInvalidException
+	 * @throws IllegalArgumentException
 	 */
 	public void assertClassSphericInvariants() throws IllegalArgumentException{
 			assertIsValidLatitude(latitude);
@@ -126,34 +156,7 @@ public class SphericCoordinate extends AbstractCoordinate {
 			throw new IllegalArgumentException(exceptionMsg);
 		}
 	}
-	
-	@Override
-	public double getDistance(Coordinate comparisonCoordinate) throws NullPointerException, IllegalArgumentException{
-		double distance = 0;
-		try {
-			distance = super.getDistance(comparisonCoordinate);
-		} catch (NullPointerException nullObject) {
-			LOG.log(SEVERE, nullObject.getMessage());
-			throw new NullPointerException(nullObject.getMessage());
-		} catch (IllegalArgumentException illegalArgument) { 
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new IllegalArgumentException(illegalArgument.getMessage());
-		} 
-		return distance;
-	}
-	
-	@Override
-	public boolean isEqual(Coordinate comparisonCoordinate) throws NullPointerException{
-		boolean equal = false;
-		try { 
-			equal = super.isEqual(comparisonCoordinate);
-		} catch (NullPointerException illegalArgument) {
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new NullPointerException(illegalArgument.getMessage());
-		}
-		return equal;
-	}
-	
+		
 	/**
 	 * 
 	 * @return latitude
@@ -181,40 +184,6 @@ public class SphericCoordinate extends AbstractCoordinate {
 		return radius;
 	}
 
-	/**
-	 * 
-	 * @param latitude
-	 * @throws SphericParametersInvalidException 
-	 * @methodtype setter
-	 */
-	public void setLatitude(double latitude) throws IllegalArgumentException{
-		assertIsValidLatitude(latitude);
-		this.latitude = latitude;
-	}
-
-	/**
-	 * 
-	 * @param longitude
-	 * @throws SphericParametersInvalidException 
-	 * @methodtype setter
-	 */
-	public void setLongitude(double longitude) throws IllegalArgumentException{
-		assertIsValidLongitude(longitude);
-		this.longitude = longitude;
-	}
-
-	/**
-	 * 
-	 * @param radius
-	 * @throws DoubleOutOfRangeException 
-	 * @throws SphericParametersInvalidException 
-	 * @methodtype setter
-	 */
-	public void setRadius(double radius) throws IllegalArgumentException {
-		assertIsValidDoubleRange(radius);
-		assertIsValidRadius(radius);
-		this.radius = radius;
-	}
 
 	/**
 	 * @return value representing the x-coordinate in a Cartesian Coordinate system
@@ -244,4 +213,36 @@ public class SphericCoordinate extends AbstractCoordinate {
 	public double getCartesianZ() {
 		return this.radius * Math.sin(Math.toRadians(this.latitude));
 	}	
+	 /**
+	  * 
+	  */
+	@Override
+	public int hashCode() {
+		int result = 1;
+		long hashLatitude = Double.doubleToLongBits(latitude);
+		long hashLongitude = Double.doubleToLongBits(longitude);
+		long hashRadius = Double.doubleToLongBits(radius);
+		return result * 37 + (int)(hashLatitude ^ (hashLatitude >>> 32)) + (int)(hashLongitude ^ (hashLongitude >>> 32)) + (int)(hashRadius ^ (hashRadius >>> 32));
+	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public boolean equals(Object sphCoordinate) {
+		if(this == sphCoordinate) {
+			return true;
+		}
+		if(sphCoordinate == null || !(sphCoordinate instanceof SphericCoordinate)) {
+			return false;
+		}
+		SphericCoordinate equalsTest = (SphericCoordinate) sphCoordinate;
+		if( (Double.compare(equalsTest.getLatitude(), this.latitude) != 0) &&
+		(Double.compare(equalsTest.getLongitude(), this.longitude) != 0) &&
+		(Double.compare(equalsTest.getRadius(), this.radius) != 0) ) return true;
+		
+	return false;
+			
+	}
+	
 }

@@ -20,9 +20,10 @@
 
 package org.wahlzeit.model;
 
-import static java.util.logging.Level.SEVERE;
 
-import java.util.logging.Logger;
+
+import java.util.HashMap;
+
 
 /**
  * 
@@ -31,21 +32,26 @@ import java.util.logging.Logger;
  */
 public class CartesianCoordinate extends AbstractCoordinate{
 	
-	private static final Logger LOG = Logger.getLogger(CartesianCoordinate.class.getName());
-	
-	private double x;
-	private double y;
-	private double z;
+	private final double x;
+	private final double y;
+	private final double z;
+	private static final int MAXIMUM_SIZE = 500;
+	protected static final HashMap<Integer, CartesianCoordinate> cartCoordinates = new HashMap<>(MAXIMUM_SIZE); 
 
-	/**
-	 * @methodtype constructor
-	 */
-	public CartesianCoordinate() {
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
+	public static synchronized CartesianCoordinate getInstance() {
+		return getInstance(0, 0, 0);
 	}
-
+	
+	public static synchronized CartesianCoordinate getInstance(double x, double y, double z) {
+		CartesianCoordinate cartCoor = new CartesianCoordinate (x, y, z);
+		CartesianCoordinate lookUpCoordinate = cartCoordinates.get(cartCoor.hashCode());
+		if(lookUpCoordinate == null) {
+			cartCoordinates.put(cartCoor.hashCode(), cartCoor);
+			return cartCoor;
+		}
+		return lookUpCoordinate;
+	}
+	
 	/**
 	 * 
 	 * @param x
@@ -53,39 +59,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @param z
 	 * @methodtype constructor
 	 */
-	public CartesianCoordinate(double x, double y, double z) {
+	private CartesianCoordinate(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 	}
-	
-	@Override
-	public double getDistance(Coordinate comparisonCoordinate) throws NullPointerException, IllegalArgumentException{
-		double distance = 0;
-		try {
-			distance = super.getDistance(comparisonCoordinate);
-		} catch (NullPointerException nullObject) {
-			LOG.log(SEVERE, nullObject.getMessage());
-			throw new NullPointerException(nullObject.getMessage());
-		} catch (IllegalArgumentException illegalArgument) { 
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new IllegalArgumentException(illegalArgument.getMessage());
-		} 
-		return distance;
-	}
-	
-	@Override
-	public boolean isEqual(Coordinate comparisonCoordinate) throws NullPointerException{
-		boolean equal = false;
-		try { 
-			equal = super.isEqual(comparisonCoordinate);
-		} catch (NullPointerException illegalArgument) {
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new NullPointerException(illegalArgument.getMessage());
-		}
-		return equal;
-	}
-	
+		
 	/**
 	 * 
 	 * @return x
@@ -115,49 +94,34 @@ public class CartesianCoordinate extends AbstractCoordinate{
 
 	/**
 	 * 
-	 * @param x
-	 * @throws DoubleOutOfRangeException 
-	 * @methodtype setter
 	 */
-	public void setX(double x) throws IllegalArgumentException {
-		try {
-			assertIsValidDoubleRange(x);
-		} catch (IllegalArgumentException illegalArgument) {
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new IllegalArgumentException(illegalArgument.getMessage());
-		}
-		this.x = x;
+	@Override
+	public int hashCode() {
+		int result = 1;
+		long hashX = Double.doubleToLongBits(x);
+		long hashY = Double.doubleToLongBits(y);
+		long hashZ = Double.doubleToLongBits(z);
+		return result * 37 + (int)(hashX ^ (hashX >>> 32)) + (int)(hashY ^ (hashY >>> 32)) + (int)(hashZ ^ (hashZ >>> 32));
 	}
-
+	
 	/**
 	 * 
-	 * @param y
-	 * @throws DoubleOutOfRangeException 
-	 * @methodtype setter
 	 */
-	public void setY(double y) throws IllegalArgumentException {
-		try {
-			assertIsValidDoubleRange(y);
-		} catch (IllegalArgumentException illegalArgument) {
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new IllegalArgumentException(illegalArgument.getMessage());
+	@Override
+	public boolean equals(Object cartCoordinate) {
+		if(this == cartCoordinate) {
+			return true;
 		}
-		this.y = y;
+		if(cartCoordinate == null || !(cartCoordinate instanceof SphericCoordinate)) {
+			return false;
+		}
+		CartesianCoordinate equalsTest = (CartesianCoordinate) cartCoordinate;
+		if( (Double.compare(equalsTest.getCartesianX(), this.x) != 0) &&
+		(Double.compare(equalsTest.getCartesianY(), this.y) != 0) &&
+		(Double.compare(equalsTest.getCartesianZ(), this.z) != 0) ) return true;
+		
+	return false;
+			
 	}
-
-	/**
-	 * 
-	 * @param z
-	 * @throws DoubleOutOfRangeException 
-	 * @methodtype setter
-	 */
-	public void setZ(double z) throws IllegalArgumentException {
-		try {
-			assertIsValidDoubleRange(z);
-		} catch (IllegalArgumentException illegalArgument) {
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new IllegalArgumentException(illegalArgument.getMessage());
-		}
-		this.z = z;
-	}	 
+	
 }
