@@ -22,7 +22,6 @@ package org.wahlzeit.model;
 
 import org.junit.Before;
 import org.junit.rules.RuleChain;
-import org.wahlzeit.exceptionhandling.IllegalHeightMountainException;
 import org.wahlzeit.model.mountain.MountainAltitudinalBelt;
 import org.wahlzeit.model.mountain.MountainPhoto;
 import org.wahlzeit.model.mountain.MountainPhotoManager;
@@ -49,11 +48,10 @@ public class MountainPhotoTest {
 	public static RuleChain ruleChain = RuleChain.outerRule(new LocalDatastoreServiceTestConfigProvider());
 
 	/**
-	 * @throws IllegalHeightMountainException 
 	 * 
 	 */
 	@Before
-	public void setUp() throws IllegalHeightMountainException {
+	public void setUp(){
 		MountainPhotoManager.getInstance();
 		String test = "default";
 		testPlainMountain.setAltitudinalBelt(test);
@@ -84,8 +82,8 @@ public class MountainPhotoTest {
 	 * @throws IllegalHeightMountainException 
 	 * 
 	 */
-	@Test(expected = IllegalHeightMountainException.class)
-	public void invalidParameterNegativHeightTest() throws IllegalHeightMountainException {
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidParameterNegativHeightTest() throws IllegalArgumentException {
 		testPlainMountain.setMountainHeight(-1);
 	}
 
@@ -93,8 +91,8 @@ public class MountainPhotoTest {
 	 * @throws IllegalHeightMountainException 
 	 * 
 	 */
-	@Test(expected = IllegalHeightMountainException.class)
-	public void invalidParameterTooBigHeightTest() throws IllegalHeightMountainException {
+	@Test(expected = IllegalArgumentException.class)
+	public void invalidParameterTooBigHeightTest() throws IllegalArgumentException {
 		testPlainMountain.setMountainHeight(8851);
 	}
 	

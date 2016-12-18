@@ -20,10 +20,8 @@
 
 package org.wahlzeit.model.mountain;
 
-import static java.util.logging.Level.SEVERE;
 import java.util.logging.Logger;
 
-import org.wahlzeit.exceptionhandling.IllegalHeightMountainException;
 import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoId;
 import org.wahlzeit.services.LogBuilder;
@@ -104,13 +102,8 @@ public class MountainPhotoFactory extends PhotoFactory {
 	 * 
 	 * @methodtype creation
 	 */
-	public MountainPhoto createPhoto(PhotoId id, double height, String altitudinalBelt) throws IllegalHeightMountainException {
-		try {
+	public MountainPhoto createPhoto(PhotoId id, double height, String altitudinalBelt) throws IllegalArgumentException {
 			return new MountainPhoto(id, height, altitudinalBelt);
-		} catch (IllegalHeightMountainException illegalHeight) {
-			log.log(SEVERE, illegalHeight.getMessage());
-			throw new IllegalHeightMountainException (illegalHeight.getMessage());
-		}
 	}
 
 }

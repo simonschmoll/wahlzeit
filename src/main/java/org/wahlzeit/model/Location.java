@@ -23,10 +23,6 @@ package org.wahlzeit.model;
 import java.util.logging.Logger;
 import static java.util.logging.Level.SEVERE;
 
-import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
-import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
-import org.wahlzeit.exceptionhandling.NullCoordinateException;
-
 import com.googlecode.objectify.annotation.Ignore;
 
 /**
@@ -44,7 +40,6 @@ public class Location{
 	public static final Location LOCATION_UNDEFINED = new Location(null);
 	
 	/**
-	 * @throws NullCoordinateException 
 	 * @methodtype constructor
 	 */
 	public Location(Coordinate coordinate){
@@ -55,23 +50,19 @@ public class Location{
 	 * 
 	 * @param location
 	 * @return distance
-	 * @throws DoubleOutOfRangeException 
-	 * @throws IllegalParameterDistanceException 
-	 * @throws NullCoordinateException 
+	 * @throws NullPointerException 
+	 * @throws IllegalArgumentException
 	 * @methodtype constructor
 	 */
-	public double getDistance(Location location) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+	public double getDistance(Location location) throws NullPointerException, IllegalArgumentException {
 		try {
 			return coordinate.getDistance(location.coordinate);
-		} catch (NullCoordinateException nullObject) {
+		} catch (NullPointerException nullObject) {
 			LOG.log(SEVERE, nullObject.getMessage());
-			throw new NullCoordinateException(nullObject.getMessage());
-		} catch (IllegalParameterDistanceException illegalArgument) { 
+			throw new NullPointerException(nullObject.getMessage());
+		} catch (IllegalArgumentException illegalArgument) { 
 			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new IllegalParameterDistanceException(illegalArgument.getMessage());
-		} catch (DoubleOutOfRangeException illegalArgument) { 
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+			throw new IllegalArgumentException(illegalArgument.getMessage());
 		}
 	}
 	

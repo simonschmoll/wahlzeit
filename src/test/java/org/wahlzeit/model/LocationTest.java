@@ -21,10 +21,7 @@
 package org.wahlzeit.model;
 
 import static org.junit.Assert.assertNotNull;
-
 import org.junit.Test;
-import org.wahlzeit.exceptionhandling.NullCoordinateException;
-import org.wahlzeit.exceptionhandling.SphericParametersInvalidException;
 
 public class LocationTest {
 
@@ -37,7 +34,7 @@ public class LocationTest {
 	 *
 	 */
 	@Test
-	public void constructorTestSpheric() throws SphericParametersInvalidException, NullCoordinateException {
+	public void constructorTestSpheric() throws IllegalArgumentException, NullPointerException {
 		SphericCoordinate testCoordinate = new SphericCoordinate(0,0);
 		testLocationSpheric = new Location(testCoordinate);
 		assertNotNull(testLocationSpheric);
@@ -48,7 +45,7 @@ public class LocationTest {
 	 *
 	 */
 	@Test
-	public void constructorTestCartesian() throws NullCoordinateException {
+	public void constructorTestCartesian() throws NullPointerException {
 		CartesianCoordinate testCoordinate = new CartesianCoordinate(0,0, 6371);
 		testLocationCartesian = new Location(testCoordinate);
 		assertNotNull(testLocationCartesian);

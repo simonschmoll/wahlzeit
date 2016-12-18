@@ -20,10 +20,6 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
-import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
-import org.wahlzeit.exceptionhandling.NullCoordinateException;
-import org.wahlzeit.exceptionhandling.SphericParametersInvalidException;
 
 /**
  * 
@@ -40,7 +36,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return direct distance between two Coordinates
 	 * 
 	 */
-	public double getDistance(Coordinate comparisonCoordinate) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+	public double getDistance(Coordinate comparisonCoordinate) throws IllegalArgumentException, NullPointerException {
 		double distance = 0;
 		assertIsNonNullArgument(comparisonCoordinate);
 		distance = doCalculateDistance(comparisonCoordinate);
@@ -65,7 +61,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return boolean
 	 * @methodtype boolean query
 	 */
-	public boolean isEqual(Coordinate comparisonCoordinate) throws NullCoordinateException {
+	public boolean isEqual(Coordinate comparisonCoordinate) throws NullPointerException {
 		assertIsNonNullArgument(comparisonCoordinate);
 		if (comparisonCoordinate == this) {
 			return true;
@@ -92,42 +88,41 @@ public abstract class AbstractCoordinate implements Coordinate {
 	/**
 	 * 
 	 * @param distance
-	 * @throws IllegalParameterDistanceException
+	 * @throws IllegalArgumentException
 	 * @methodtype assertion
 	 */
-	public void assertDistanceNotNegative(double distance) throws IllegalParameterDistanceException{
+	public void assertDistanceNotNegative(double distance) throws IllegalArgumentException{
 		if(distance < 0) 
-			throw new IllegalParameterDistanceException ("Distance must not be negativ!" + distance);
+			throw new IllegalArgumentException ("Distance must not be negativ!" + distance);
 	}
 	
 	/**
 	 * 
 	 * @param value
-	 * @throws DoubleOutOfRangeException
+	 * @throws IllegalArgumentException
 	 * @methodtype assertion
 	 */
-	public void assertIsValidDoubleRange(double value) throws DoubleOutOfRangeException{
+	public void assertIsValidDoubleRange(double value) throws IllegalArgumentException{
 		if(Double.isInfinite(value) || Double.isNaN(value))
-			throw new DoubleOutOfRangeException ("Double value is not valid" + value);
+			throw new IllegalArgumentException ("Double value is not valid" + value);
 		}
 	
 	
 	/**
 	 * 
 	 * @param comparisonCoordinate
-	 * @throws NullCoordinateException
+	 * @throws NullPointerException
 	 * @methodtype assertion
 	 */
-	public static void assertIsNonNullArgument(Coordinate comparisonCoordinate)throws NullCoordinateException{
+	public static void assertIsNonNullArgument(Coordinate comparisonCoordinate)throws NullPointerException{
 		if (comparisonCoordinate == null) {
-			throw new NullCoordinateException("Coordinate must not be null!");
+			throw new NullPointerException("Coordinate must not be null!");
 		}
 	}
 	
 	/**
 	 * assertion method for Invariants
-	 * currently not used --> might be needed for future implementations
-	 * @throws  
+	 * currently not used --> might be needed for future implementations  
 	 */
 	public void assertClassInvariants() {
 		

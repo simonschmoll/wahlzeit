@@ -20,10 +20,6 @@
 
 package org.wahlzeit.model;
 
-import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
-import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
-import org.wahlzeit.exceptionhandling.NullCoordinateException;
-
 /**
  * 
  * interface for the Coordinate classes
@@ -40,7 +36,7 @@ interface Coordinate {
 	 * @throws NullCoordinateException 
 	 * @throws DoubleOutOfRangeException 
 	 */
-	public double getDistance(Coordinate comparisonCoordinate) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException;
+	public double getDistance(Coordinate comparisonCoordinate) throws NullPointerException, IllegalArgumentException;
 	
 	/**
 	 * 
@@ -48,7 +44,7 @@ interface Coordinate {
 	 * @return boolean
 	 * @throws NullCoordinateException 
 	 */
-	public boolean isEqual(Coordinate comparisonCoordinate) throws NullCoordinateException;
+	public boolean isEqual(Coordinate comparisonCoordinate) throws NullPointerException;
 	
 	/**
 	 * 

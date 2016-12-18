@@ -24,7 +24,6 @@ import static java.util.logging.Level.SEVERE;
 
 import java.util.logging.Logger;
 
-import org.wahlzeit.exceptionhandling.IllegalHeightMountainException;
 import org.wahlzeit.model.Location;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
@@ -73,7 +72,7 @@ public class MountainPhoto extends Photo {
 	 * 
 	 * @methodtype constructor
 	 */
-	public MountainPhoto(PhotoId id, double height, String altitudinalBelt) throws IllegalHeightMountainException {
+	public MountainPhoto(PhotoId id, double height, String altitudinalBelt) throws IllegalArgumentException {
 		super(id);
 		assertIsValidHeight(height);
 		this.altitudinalBelt = MountainAltitudinalBelt.getFromString(altitudinalBelt);
@@ -97,7 +96,7 @@ public class MountainPhoto extends Photo {
 	 * 
 	 * @methodtype set
 	 */
-	public void setMountainHeight(double newHeight) throws IllegalHeightMountainException {
+	public void setMountainHeight(double newHeight) throws IllegalArgumentException {
 		assertIsValidHeight(newHeight);
 		this.height = newHeight;
 	}
@@ -130,7 +129,7 @@ public class MountainPhoto extends Photo {
 	 * 
 	 * @metodtype assertion
 	 */
-	public void assertIsValidHeight(double height) throws IllegalHeightMountainException {
+	public void assertIsValidHeight(double height) throws IllegalArgumentException {
 		// this is necessary because the highest mountain - regarding the
 		// elevation above sea level-
 		// is Mount Everest with 8850 metres and there is no mountain defined
@@ -138,7 +137,7 @@ public class MountainPhoto extends Photo {
 		if (height < 0 || height > 8850) {
 			String exceptionMsg = "Illegal parameter for Mountain Height!";
 			LOG.log(SEVERE, exceptionMsg);
-			throw new IllegalHeightMountainException(exceptionMsg + height);
+			throw new IllegalArgumentException(exceptionMsg + height);
 		}
 	}
 }

@@ -24,10 +24,6 @@ import static java.util.logging.Level.SEVERE;
 
 import java.util.logging.Logger;
 
-import org.wahlzeit.exceptionhandling.DoubleOutOfRangeException;
-import org.wahlzeit.exceptionhandling.IllegalParameterDistanceException;
-import org.wahlzeit.exceptionhandling.NullCoordinateException;
-
 /**
  * 
  * a class to represent a Cartesian Coordinate
@@ -64,31 +60,28 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	}
 	
 	@Override
-	public double getDistance(Coordinate comparisonCoordinate) throws NullCoordinateException, IllegalParameterDistanceException, DoubleOutOfRangeException {
+	public double getDistance(Coordinate comparisonCoordinate) throws NullPointerException, IllegalArgumentException{
 		double distance = 0;
 		try {
 			distance = super.getDistance(comparisonCoordinate);
-		} catch (NullCoordinateException nullObject) {
+		} catch (NullPointerException nullObject) {
 			LOG.log(SEVERE, nullObject.getMessage());
-			throw new NullCoordinateException(nullObject.getMessage());
-		} catch (IllegalParameterDistanceException illegalArgument) { 
+			throw new NullPointerException(nullObject.getMessage());
+		} catch (IllegalArgumentException illegalArgument) { 
 			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new IllegalParameterDistanceException(illegalArgument.getMessage());
-		} catch (DoubleOutOfRangeException illegalArgument) { 
-			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
-		}
+			throw new IllegalArgumentException(illegalArgument.getMessage());
+		} 
 		return distance;
 	}
 	
 	@Override
-	public boolean isEqual(Coordinate comparisonCoordinate) throws NullCoordinateException{
+	public boolean isEqual(Coordinate comparisonCoordinate) throws NullPointerException{
 		boolean equal = false;
 		try { 
 			equal = super.isEqual(comparisonCoordinate);
-		} catch (NullCoordinateException illegalArgument) {
+		} catch (NullPointerException illegalArgument) {
 			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new NullCoordinateException(illegalArgument.getMessage());
+			throw new NullPointerException(illegalArgument.getMessage());
 		}
 		return equal;
 	}
@@ -126,12 +119,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @throws DoubleOutOfRangeException 
 	 * @methodtype setter
 	 */
-	public void setX(double x) throws DoubleOutOfRangeException {
+	public void setX(double x) throws IllegalArgumentException {
 		try {
 			assertIsValidDoubleRange(x);
-		} catch (DoubleOutOfRangeException illegalArgument) {
+		} catch (IllegalArgumentException illegalArgument) {
 			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+			throw new IllegalArgumentException(illegalArgument.getMessage());
 		}
 		this.x = x;
 	}
@@ -142,12 +135,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @throws DoubleOutOfRangeException 
 	 * @methodtype setter
 	 */
-	public void setY(double y) throws DoubleOutOfRangeException {
+	public void setY(double y) throws IllegalArgumentException {
 		try {
 			assertIsValidDoubleRange(y);
-		} catch (DoubleOutOfRangeException illegalArgument) {
+		} catch (IllegalArgumentException illegalArgument) {
 			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+			throw new IllegalArgumentException(illegalArgument.getMessage());
 		}
 		this.y = y;
 	}
@@ -158,12 +151,12 @@ public class CartesianCoordinate extends AbstractCoordinate{
 	 * @throws DoubleOutOfRangeException 
 	 * @methodtype setter
 	 */
-	public void setZ(double z) throws DoubleOutOfRangeException {
+	public void setZ(double z) throws IllegalArgumentException {
 		try {
 			assertIsValidDoubleRange(z);
-		} catch (DoubleOutOfRangeException illegalArgument) {
+		} catch (IllegalArgumentException illegalArgument) {
 			LOG.log(SEVERE, illegalArgument.getMessage());
-			throw new DoubleOutOfRangeException(illegalArgument.getMessage());
+			throw new IllegalArgumentException(illegalArgument.getMessage());
 		}
 		this.z = z;
 	}	 
