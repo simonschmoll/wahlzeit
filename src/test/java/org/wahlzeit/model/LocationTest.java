@@ -35,7 +35,7 @@ public class LocationTest {
 	 */
 	@Test
 	public void constructorTestSpheric() throws IllegalArgumentException, NullPointerException {
-		SphericCoordinate testCoordinate = new SphericCoordinate(0,0);
+		SphericCoordinate testCoordinate = SphericCoordinate.getInstance(0,0);
 		testLocationSpheric = new Location(testCoordinate);
 		assertNotNull(testLocationSpheric);
 	}
@@ -46,7 +46,7 @@ public class LocationTest {
 	 */
 	@Test
 	public void constructorTestCartesian() throws NullPointerException {
-		CartesianCoordinate testCoordinate = new CartesianCoordinate(0,0, 6371);
+		CartesianCoordinate testCoordinate = CartesianCoordinate.getInstance(0,0, 6371);
 		testLocationCartesian = new Location(testCoordinate);
 		assertNotNull(testLocationCartesian);
 	}

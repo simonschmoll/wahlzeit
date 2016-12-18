@@ -21,7 +21,6 @@
 package org.wahlzeit.model;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -34,34 +33,15 @@ public class CartesianCoordinateTest {
 	SphericCoordinate sphericCoor;
 	CartesianCoordinate cartesianCoor;
 	
-	/**
-	 * 
-	 */
-	@Before
-	public void setUp() {
-		cartesianCoor = new CartesianCoordinate(1,1, 6371);
-	}
-	
-	/**
-	 * 
-	 */
-	@Test
-	public void constructorTestCartesianCoordinate() {
-		Assert.assertNotNull(cartesianCoor);
-	}
-	
 
-	
 	/**
-	 * @throws DoubleOutOfRangeException 
+	 * @throws IllegalArgumentException 
 	 * 
 	 */
 	@Test
 	public void setterGetterTestCartesianCoordinate() throws IllegalArgumentException {
 		//Cartesian Coordinates of the North Pole
-		cartesianCoor.setX(0);
-		cartesianCoor.setY(0);
-		cartesianCoor.setZ(6371);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0, 0, 6371);
 		Assert.assertEquals(cartesianCoor.getCartesianX(), 0.0, 0);
 		Assert.assertEquals(cartesianCoor.getCartesianY(), 0.0, 0);
 		Assert.assertEquals(cartesianCoor.getCartesianZ(), 6371, 0);
@@ -69,31 +49,29 @@ public class CartesianCoordinateTest {
 	
 	
 	/**
-	 * @throws SphericParametersInvalidException 
+	 * @throws IllegalArgumentException 
 	 * 
 	 */
 	@Test
 	public void conversionSphericToSphericTest() throws IllegalArgumentException {
-		sphericCoor = new SphericCoordinate(90, 0);
-		cartesianCoor = new CartesianCoordinate(0, 0, 6371);
+		sphericCoor = SphericCoordinate.getInstance(90, 0);
+		cartesianCoor = CartesianCoordinate.getInstance(0, 0, 6371);
 		Assert.assertEquals(sphericCoor.getCartesianX(), cartesianCoor.getCartesianX(), 0.001);
 		Assert.assertEquals(sphericCoor.getCartesianY(), cartesianCoor.getCartesianY(), 0.001);
 		Assert.assertEquals(sphericCoor.getCartesianZ(), cartesianCoor.getCartesianZ(),0.001);
 	}
 	
 	/**
-	 * @throws SphericParametersInvalidException 
-	 * @throws DoubleOutOfRangeException 
-	 * @throws IllegalParameterDistanceException 
-	 * @throws NullCoordinateException 
+	 * @throws IllegalArgumentException
+	 * @throws NullPointerException
 	 * 
 	 */
 	@Test
 	public void distanceTestSameCoordinateType() throws IllegalArgumentException, NullPointerException {
-		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
-		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
-		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, -6371);
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(-90, 0);
+		SphericCoordinate sphericCoor2 = SphericCoordinate.getInstance(90, 0);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, 6371);
+		CartesianCoordinate cartesianCoor2 = CartesianCoordinate.getInstance(0,0, -6371);
 		double resultExpected = 2*6371;
 		double resultCalculatedSpheric = sphericCoor.getDistance(sphericCoor2);
 		double resultCalculatedCartesian = cartesianCoor.getDistance(cartesianCoor2);
@@ -102,16 +80,14 @@ public class CartesianCoordinateTest {
 	}
 	
 	/**
-	 * @throws SphericParametersInvalidException 
-	 * @throws DoubleOutOfRangeException 
-	 * @throws IllegalParameterDistanceException 
-	 * @throws NullCoordinateException 
+	 * @throws IllegalArgumentException
+	 * @throws NullPointerException
 	 * 
 	 */
 	@Test
 	public void distanceTestDifferentCoordinateTypes() throws IllegalArgumentException, NullPointerException  {
-		SphericCoordinate sphericCoor = new SphericCoordinate (90, 0);
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(90, 0);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, -6371);
 		double resultExpected = 2*6371;
 		double resultCalculatedSpheric = sphericCoor.getDistance(cartesianCoor);
 		double resultCalculatedCartesian = cartesianCoor.getDistance(sphericCoor);
@@ -126,14 +102,33 @@ public class CartesianCoordinateTest {
 	 */
 	@Test
 	public void isEqualTest() throws NullPointerException  {
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
-		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, 6371);
+		CartesianCoordinate cartesianCoor2 = CartesianCoordinate.getInstance(0,0, 6371);
 		Assert.assertTrue(cartesianCoor.isEqual(cartesianCoor2));
 	}
 	
+	/**
+	 * 
+	 * @throws IllegalArgumentException
+	 * @throws NullPointerException
+	 */
 	@Test (expected = NullPointerException.class)
 	public void distanceWithNullParameter () throws IllegalArgumentException, NullPointerException  {
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, 6371);
 		cartesianCoor.getDistance(null);
 	}
+	
+	/**
+	 * 
+	 */
+	@Test 
+	public void equalsTest() {
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0,6371);
+		CartesianCoordinate cartesianCoor2 = CartesianCoordinate.getInstance(0,0,6371);
+		CartesianCoordinate cartesianCoor3 = CartesianCoordinate.getInstance(-1,0,6371);
+		Assert.assertTrue(cartesianCoor.equals(cartesianCoor2));
+		Assert.assertTrue(cartesianCoor.equals(cartesianCoor));
+		Assert.assertFalse(cartesianCoor.equals(cartesianCoor3));
+	}
+	
 }

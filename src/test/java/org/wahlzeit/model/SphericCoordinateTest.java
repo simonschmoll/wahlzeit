@@ -14,8 +14,8 @@ public class SphericCoordinateTest {
 	 */
 	@Before
 	public void setUp(){
-		sphericCoor = new SphericCoordinate(1,1);
-		cartesianCoor = new CartesianCoordinate(1,1, 6371);
+		sphericCoor = SphericCoordinate.getInstance(90, 0 , 6000);
+		cartesianCoor = CartesianCoordinate.getInstance(1,1, 6371);
 	}
 	
 	/**
@@ -31,9 +31,6 @@ public class SphericCoordinateTest {
 	 */
 	@Test
 	public void setterGetterTestSphericCoordinate() {
-		sphericCoor.setLatitude(90);
-		sphericCoor.setLongitude(0);
-		sphericCoor.setRadius(6000);
 		Assert.assertEquals(sphericCoor.getLatitude(),90, 0);
 		Assert.assertEquals(sphericCoor.getLongitude(),0, 0);
 		Assert.assertEquals(sphericCoor.getRadius(),6000, 0);
@@ -44,8 +41,8 @@ public class SphericCoordinateTest {
 	 * 
 	 */
 	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLatitude() throws IllegalArgumentException {
-		sphericCoor = new SphericCoordinate(91, 0);
+	public void invalidParameterSphericLatitude() throws IllegalArgumentException {
+		sphericCoor = SphericCoordinate.getInstance(91, 0);
 	}
 	
 	/**
@@ -53,8 +50,8 @@ public class SphericCoordinateTest {
 	 * 
 	 */
 	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLatitude2() throws IllegalArgumentException {
-		sphericCoor = new SphericCoordinate(-91, 0);
+	public void invalidParameterSphericLatitude2() throws IllegalArgumentException {
+		sphericCoor = SphericCoordinate.getInstance(-91, 0);
 	}	
 	
 	/**
@@ -62,8 +59,8 @@ public class SphericCoordinateTest {
 	 * 
 	 */
 	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLongitude() throws IllegalArgumentException {
-		sphericCoor = new SphericCoordinate(0, 181);
+	public void invalidParameterSphericLongitude() throws IllegalArgumentException {
+		sphericCoor = SphericCoordinate.getInstance(0, 181);
 	}
 	
 	/**
@@ -71,54 +68,18 @@ public class SphericCoordinateTest {
 	 * 
 	 */
 	@Test (expected = IllegalArgumentException.class)
-	public void constructorInvalidParameterSphericLongitude2() throws IllegalArgumentException {
-		sphericCoor = new SphericCoordinate(0, -181);
+	public void invalidParameterSphericLongitude2() throws IllegalArgumentException {
+		sphericCoor = SphericCoordinate.getInstance(0, -181);
 	}
-	
-	/**
-	 * @throws IllegalArgumentException 
-	 * 
-	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLatitude() throws IllegalArgumentException {
-		sphericCoor.setLatitude(91);
-	}
-	
-	/**
-	 * @throws IllegalArgumentException 
-	 * 
-	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLatitude2() throws IllegalArgumentException {
-		sphericCoor.setLatitude(-91);
-	}
-	
-	/**
-	 * @throws IllegalArgumentException 
-	 * 
-	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLongitude() throws IllegalArgumentException {
-		sphericCoor.setLongitude(181);
-	}
-	
-	/**
-	 * @throws IllegalArgumentException 
-	 * 
-	 */
-	@Test (expected = IllegalArgumentException.class)
-	public void setterInvalidParameterSphericLongitude2() throws IllegalArgumentException {
-		sphericCoor.setLatitude(-181);
-	}
-	
+		
 	/**
 	 * @throws IllegalArgumentException 
 	 * 
 	 */
 	@Test
 	public void conversionSphericToCartesianTest() throws IllegalArgumentException {
-		sphericCoor = new SphericCoordinate(90, 0);
-		cartesianCoor = new CartesianCoordinate(0, 0, 6371);
+		sphericCoor = SphericCoordinate.getInstance(90, 0);
+		cartesianCoor = CartesianCoordinate.getInstance(0, 0, 6371);
 		Assert.assertEquals(cartesianCoor.getCartesianX(), sphericCoor.getCartesianX(), 0.001);
 		Assert.assertEquals(cartesianCoor.getCartesianY(), sphericCoor.getCartesianY(), 0.001);
 		Assert.assertEquals(cartesianCoor.getCartesianZ(), sphericCoor.getCartesianZ(), 0.001);
@@ -131,7 +92,7 @@ public class SphericCoordinateTest {
 	 */
 	@Test (expected = NullPointerException.class)
 	public void nullArgumentForDistanceTest() throws IllegalArgumentException, NullPointerException {
-		sphericCoor = new SphericCoordinate(90, 0);
+		sphericCoor = SphericCoordinate.getInstance(90, 0);
 		sphericCoor.getDistance(null);
 	}
 	
@@ -142,10 +103,10 @@ public class SphericCoordinateTest {
 	 */
 	@Test
 	public void distanceTestSameCoordinateType() throws IllegalArgumentException, NullPointerException  {
-		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
-		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, 6371);
-		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, -6371);
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(-90, 0);
+		SphericCoordinate sphericCoor2 = SphericCoordinate.getInstance(90, 0);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, 6371);
+		CartesianCoordinate cartesianCoor2 = CartesianCoordinate.getInstance(0,0, -6371);
 		double resultExpected = 2*6371;
 		double resultCalculatedSpheric = sphericCoor.getDistance(sphericCoor2);
 		double resultCalculatedCartesian = cartesianCoor.getDistance(cartesianCoor2);
@@ -160,8 +121,8 @@ public class SphericCoordinateTest {
 	 */
 	@Test
 	public void distanceTestDifferentCoordinateTypes() throws IllegalArgumentException, NullPointerException  {
-		SphericCoordinate sphericCoor = new SphericCoordinate (90, 0);
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(90, 0);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, -6371);
 		double resultExpected = 2*6371;
 		double resultCalculatedSpheric = sphericCoor.getDistance(cartesianCoor);
 		double resultCalculatedCartesian = cartesianCoor.getDistance(sphericCoor);
@@ -177,10 +138,10 @@ public class SphericCoordinateTest {
 	 */
 	@Test
 	public void isEqualTest() throws IllegalArgumentException, NullPointerException  {
-		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
-		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
-		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(-90, 0);
+		SphericCoordinate sphericCoor2 = SphericCoordinate.getInstance(90, 0);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, -6371);
+		CartesianCoordinate cartesianCoor2 = CartesianCoordinate.getInstance(0,0, 6371);
 		Assert.assertTrue(sphericCoor.isEqual(cartesianCoor));
 		Assert.assertTrue(sphericCoor2.isEqual(cartesianCoor2));
 	}
@@ -192,10 +153,10 @@ public class SphericCoordinateTest {
 	 */
 	@Test
 	public void isEqualTest2() throws IllegalArgumentException, NullPointerException  {
-		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
-		SphericCoordinate sphericCoor2 = new SphericCoordinate (90, 0);
-		CartesianCoordinate cartesianCoor = new CartesianCoordinate(0,0, -6371);
-		CartesianCoordinate cartesianCoor2 = new CartesianCoordinate(0,0, 6371);
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(-90, 0);
+		SphericCoordinate sphericCoor2 = SphericCoordinate.getInstance(90, 0);
+		CartesianCoordinate cartesianCoor = CartesianCoordinate.getInstance(0,0, -6371);
+		CartesianCoordinate cartesianCoor2 = CartesianCoordinate.getInstance(0,0, 6371);
 		Assert.assertFalse(sphericCoor.isEqual(cartesianCoor2));
 		Assert.assertFalse(sphericCoor2.isEqual(cartesianCoor));
 	}
@@ -207,8 +168,21 @@ public class SphericCoordinateTest {
 	 */
 	@Test (expected = NullPointerException.class)
 	public void isEqualWithNullObject () throws IllegalArgumentException, NullPointerException  {
-		SphericCoordinate sphericCoor = new SphericCoordinate(-90, 0);
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(-90, 0);
 		sphericCoor.isEqual(null);
+	}
+	
+	/**
+	 * 
+	 */
+	@Test
+	public void equalsTest() {
+		SphericCoordinate sphericCoor = SphericCoordinate.getInstance(90, 0);
+		SphericCoordinate sphericCoor2 = SphericCoordinate.getInstance(90, 0);
+		SphericCoordinate sphericCoor3 = SphericCoordinate.getInstance(90, -15);
+		Assert.assertTrue(sphericCoor.equals(sphericCoor2));
+		Assert.assertTrue(sphericCoor.equals(sphericCoor));
+		Assert.assertFalse(sphericCoor.equals(sphericCoor3));
 	}
 	
 	
