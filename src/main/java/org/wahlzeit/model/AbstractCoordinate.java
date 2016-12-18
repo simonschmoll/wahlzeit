@@ -79,6 +79,8 @@ public abstract class AbstractCoordinate implements Coordinate {
 	 * @return boolean
 	 */
 	private boolean doIsEqualWithDeviation(double x, double y) {
+		assertIsValidDoubleRange(x);
+		assertIsValidDoubleRange(y);
 		double deviation = 0.00001;
 		if (Math.abs(x - y) <= deviation)
 			return true;
