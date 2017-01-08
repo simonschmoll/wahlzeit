@@ -20,7 +20,12 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.PatternInstance;
 
+@PatternInstance(
+		name = "Template Method",
+		participants = { "AbstractCoordinate", "SphericCoordinate", "CartesianCoordinate", "Coordinate" }
+)
 /**
  * 
  * abstract Superclass for Coordinates

@@ -21,8 +21,14 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.services.LogBuilder;
+import org.wahlzeit.utils.PatternInstance;
 
 import java.util.logging.Logger;
+
+@PatternInstance(
+	name = "Abstract Factory",
+	participants = { "PhotoFactory", "MountainPhotoFactory" }
+)
 
 /**
  * An Abstract Factory for creating photos and related objects.
