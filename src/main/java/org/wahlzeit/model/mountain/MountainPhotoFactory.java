@@ -102,8 +102,8 @@ public class MountainPhotoFactory extends PhotoFactory {
 	 * 
 	 * @methodtype creation
 	 */
-	public MountainPhoto createPhoto(PhotoId id, double height, String altitudinalBelt) throws IllegalArgumentException {
-			return new MountainPhoto(id, height, altitudinalBelt);
+	public MountainPhoto createPhoto(PhotoId id, Mountain mountain) throws IllegalArgumentException {
+			return new MountainPhoto(id, mountain);
 	}
 
 }

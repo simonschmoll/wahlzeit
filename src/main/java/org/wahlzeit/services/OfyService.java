@@ -13,7 +13,9 @@ import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoCase;
 import org.wahlzeit.model.Tag;
 import org.wahlzeit.model.User;
+import org.wahlzeit.model.mountain.Mountain;
 import org.wahlzeit.model.mountain.MountainPhoto;
+import org.wahlzeit.model.mountain.MountainType;
 import org.wahlzeit.model.persistence.DatastoreAdapter.ImageWrapper;
 
 /**
@@ -27,6 +29,8 @@ public class OfyService {
 	 * Register all entities at startup
 	 */
 	static {
+		factory().register(MountainType.class);
+		factory().register(Mountain.class);
 		factory().register(Photo.class);
 		factory().register(MountainPhoto.class);
 		factory().register(Globals.class);
