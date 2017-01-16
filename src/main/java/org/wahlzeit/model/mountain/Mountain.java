@@ -25,15 +25,19 @@ public class Mountain extends DataObject {
 
 
 	private MountainType type = null;
+	
 	@Id
+	long mountainID;
+	
 	private String mountainName = "Default";
-	@Ignore
+	
 	private Continent continent = Continent.Default;
-	@Ignore
+	
 	private double height = 0;
-	@Ignore
+	
 	Location location = Location.LOCATION_UNDEFINED;
-
+	
+	
 	/**
 	 * 
 	 * @param type

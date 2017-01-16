@@ -23,8 +23,10 @@ import com.googlecode.objectify.annotation.Ignore;
 public class MountainType extends DataObject {
 
 	@Id
+	long typeId;
+	
 	private String typeName = "";
-	@Ignore
+	
 	private MountainAltitudinalBelt altitudinalBelt = MountainAltitudinalBelt.DEFAULT;
 	@Ignore
 	private Set<MountainType> subType= new HashSet<MountainType>();
