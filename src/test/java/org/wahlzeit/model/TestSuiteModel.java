@@ -18,8 +18,10 @@ import org.junit.runner.RunWith;
 		PhotoFilterTest.class,
 		TagsTest.class,
 		UserStatusTest.class, 
-		ValueTest.class	
-		
+		ValueTest.class,
+		MountainTest.class,
+		MountainTypeTest.class,
+		MountainManagerTest.class	
 	})
 
 /**
