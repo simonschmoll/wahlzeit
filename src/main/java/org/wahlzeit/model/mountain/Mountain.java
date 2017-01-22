@@ -5,13 +5,13 @@ package org.wahlzeit.model.mountain;
  * 1. Sequence of calls until creation
  * 	1.1 MountainManager is called through createMountain(MountainType type, String mountainName, double height, Continent continent)
  * 	1.2 This method creates a new Mountain through: Mountain newMountain = new Mountain (type, mountainName, height, continent);
- * 	(1.3 The new Mountain is returned to the caller)
+ * (1.3 The new Mountain is returned to the caller)
  * 
  * 2. Object creation table
  * 	2.1 Delegation: separate-object (MountainManager is creating objects of Mountain)
- * 	2.2	On-the-Spot: concrete class is selected through hard coded new Mountain
- * 	2.3	N/A
- * 	2.4	Instantiation: in code (constructor of Mountain is called directly)
+ * 	2.2 On-the-Spot: concrete class is selected through hard coded new Mountain
+ * 	2.3 N/A
+ * 	2.4 Instantiation: in code (constructor of Mountain is called directly)
  * 	2.5 Initialization: default (constructor of Mountain has fixed argument list)
  * 	2.6 Building: Default (Mountain is creating structure by itself)
  * 
