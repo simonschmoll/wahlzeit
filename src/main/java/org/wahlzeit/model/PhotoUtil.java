@@ -41,6 +41,8 @@ public class PhotoUtil {
 	 * @methodtype creation
 	 */
 	public static Photo createPhoto(String filename, PhotoId id, Image uploadedImage) throws Exception {
+		
+		//Step 1.4 in creation process of MountainPhoto
 		Photo result = MountainPhotoFactory.getInstance().createPhoto(id);
 		result.setEnding(filename.substring(filename.lastIndexOf(".") + 1));
 

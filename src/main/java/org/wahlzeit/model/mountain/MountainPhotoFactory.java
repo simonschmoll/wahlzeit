@@ -88,6 +88,8 @@ public class MountainPhotoFactory extends PhotoFactory {
 	 * @methodtype creation
 	 */
 	public MountainPhoto createPhoto(PhotoId id) {
+		
+		//Step 1.5 in creation process of MountainPhoto
 		return new MountainPhoto(id);
 	}
 
@@ -95,7 +97,7 @@ public class MountainPhotoFactory extends PhotoFactory {
 	 * Creates a new photo of mountains with id, height, altitudinalBelt
 	 * 
 	 * @param id
-	 * @param height
+	 * @param mountain
 	 * @param altitudinalBelt
 	 * @return MountainPhoto
 	 * @throws IllegalHeightMountainException 

@@ -78,6 +78,8 @@ public class UploadPhotoFormHandler extends AbstractWebFormHandler {
 			String fileName = us.getAsString(args, "fileName");
 			User user = (User) us.getClient();
 			Image uploadedImage = user.getUploadedImage();
+			
+			//Step 1.2 in creation process of MountainPhoto
 			Photo photo = pm.createPhoto(fileName, uploadedImage);
 
 			user.addPhoto(photo);

@@ -20,11 +20,36 @@
 
 package org.wahlzeit.model.mountain;
 
-
+import java.util.Map;
 import org.wahlzeit.model.Photo;
 import org.wahlzeit.model.PhotoId;
-
+import org.wahlzeit.model.UserSession;
+import com.google.appengine.api.images.Image;
 import com.googlecode.objectify.annotation.Subclass;
+
+/**
+ * Documentation of the creation process of MountainPhoto
+ * 1. Sequence of calls until creation
+ * 	1.1 MountainPhotoManager is initialized in ModelMain (startUP)
+ * 	1.2 MountainPhotoManager is called in UploadPhotoFormHandler (doHandlePost(UserSession us, Map args))
+ * 		with the call createPhoto(fileName, uploadedImage)
+ * 	1.2.1	MountainPhotoManager inherits this method from PhotoManager
+ * 	1.3	Next PhotoUtil is called with the method createPhoto(String filename, PhotoId id, Image uploadedImage)
+ * 	1.4 In PhotoUtil the MountainPhotoFactory.getInstance().createPhoto(id) method is called 
+ * 	1.5 In createPhoto(id) from MountainPhotoFactory a new MountainPhoto is created through: return new MountainPhoto(id)
+ * 	(1.6 This calls the constructor from MountainPhoto
+ * 	1.7 The constructor is calling the inherited constructor from Photo through super(id)
+ * 	1.8 Lastly the id is set and the counter from DataObject is incremented through incWriteCount();)
+ * 
+ * 2. Object creation table
+ * 	2.1 Delegation: separate-object (MountainPhotoFactory is creating the MountainPhoto)
+ * 	2.2	Selection: by-subclassing (MountainPhotoFactory is a subclass from PhotoFactory)
+ * 	2.3	N/A
+ * 	2.4	Instantiation: in code (constructor of MountainPhoto is called directly)
+ * 	2.5 Initialization: By-key-value-pair (constructor of MountainPhoto has variable argument list)
+ * 	2.6 Building: Default (MountainPhoto is creating structure by itself)
+ * 
+ */
 
 /**
  * 

@@ -1,7 +1,6 @@
 package org.wahlzeit.model.mountain;
 
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.wahlzeit.services.DataObject;
@@ -9,7 +8,7 @@ import org.wahlzeit.utils.PatternInstance;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
+import com.googlecode.objectify.annotation.Serialize;
 
 /**
  * representation of the Mountain Type class
@@ -28,7 +27,7 @@ public class MountainType extends DataObject {
 	private String typeName = "";
 	
 	private MountainAltitudinalBelt altitudinalBelt = MountainAltitudinalBelt.DEFAULT;
-	@Ignore
+	@Serialize
 	private Set<MountainType> subType= new HashSet<MountainType>();
 	
 	/**
