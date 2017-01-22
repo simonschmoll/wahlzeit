@@ -20,7 +20,7 @@ import com.googlecode.objectify.annotation.Entity;
  *
  */
 
-@Entity
+
 public class MountainManager extends ObjectManager {
 
 	private static final Logger log = Logger.getLogger(MountainManager.class.getName());

@@ -32,7 +32,6 @@ public class OfyService {
 	static {
 		factory().register(MountainType.class);
 		factory().register(Mountain.class);
-		factory().register(MountainManager.class);
 		factory().register(Photo.class);
 		factory().register(MountainPhoto.class);
 		factory().register(Globals.class);
