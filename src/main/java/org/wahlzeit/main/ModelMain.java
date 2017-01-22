@@ -22,10 +22,10 @@ package org.wahlzeit.main;
 
 import org.wahlzeit.model.GlobalsManager;
 import org.wahlzeit.model.PhotoCaseManager;
-import org.wahlzeit.model.PhotoFactory;
 import org.wahlzeit.model.PhotoManager;
 import org.wahlzeit.model.User;
 import org.wahlzeit.model.UserManager;
+import org.wahlzeit.model.mountain.MountainManager;
 import org.wahlzeit.model.mountain.MountainPhotoFactory;
 import org.wahlzeit.model.mountain.MountainPhotoManager;
 import org.wahlzeit.model.persistence.DatastoreAdapter;
@@ -61,6 +61,9 @@ public abstract class ModelMain extends AbstractMain {
 		log.config(LogBuilder.createSystemMessage().addAction("load user").toString());
 		UserManager.getInstance().init();
 		
+		log.config(LogBuilder.createSystemMessage().addAction("load MountainTypes").toString());
+		MountainManager.getInstance().init();
+		
 //		log.config(LogBuilder.createSystemMessage().addAction("init PhotoFactory").toString());
 //		PhotoFactory.initialize();
 //				
@@ -69,7 +72,8 @@ public abstract class ModelMain extends AbstractMain {
 		
 		log.config(LogBuilder.createSystemMessage().addAction("init MountainPhotoFactory").toString());
 		MountainPhotoFactory.initialize();
-				
+
+		//Step 1.1 in creation process of MountainPhoto
 		log.config(LogBuilder.createSystemMessage().addAction("load MountainPhotos").toString());
 		MountainPhotoManager.getInstance().init();
 		

@@ -2,7 +2,9 @@ package org.wahlzeit.model;
 
 import static org.junit.Assert.assertNotNull;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.RuleChain;
 import org.wahlzeit.model.mountain.Mountain;
@@ -23,14 +25,14 @@ public class MountainManagerTest {
 	@ClassRule
 	public static RuleChain ruleChain = RuleChain.outerRule(new LocalDatastoreServiceTestConfigProvider());
 	
-	
-	MountainManager manager = new MountainManager();
 
+	
 	/**
 	 * 
 	 */
 	@Test
 	public void singletonTest() {
+		MountainManager manager = new MountainManager();
 		assertNotNull(manager);
 		assertNotNull(MountainManager.getInstance());
 	}
@@ -40,7 +42,7 @@ public class MountainManagerTest {
 	 */
 	@Test
 	public void createMountainTest() {
-		assertNotNull(MountainManager.getInstance().createMountain(new MountainType("Test", MountainAltitudinalBelt.DEFAULT), "Test", 0, Continent.Default));
+		assertNotNull(MountainManager.getInstance().createMountain(new MountainType("TestForInstance", MountainAltitudinalBelt.DEFAULT), "Test6", 0, Continent.Default));
 	}
 	
 	/**
@@ -48,8 +50,21 @@ public class MountainManagerTest {
 	 */
 	@Test
 	public void createMountainTypeTest() {
-		assertNotNull(MountainManager.getInstance().createMountainType("Test", MountainAltitudinalBelt.DEFAULT));
-		assertNotNull(MountainManager.getInstance().createMountainTypeWithSuperType("Test", MountainAltitudinalBelt.DEFAULT, new MountainType("Test", MountainAltitudinalBelt.DEFAULT)));
+		MountainManager.getInstance().createMountainType("TestType1", MountainAltitudinalBelt.DEFAULT);
+		MountainManager.getInstance().createMountainTypeWithSuperType("TestType2", MountainAltitudinalBelt.DEFAULT, new MountainType("Test2", MountainAltitudinalBelt.DEFAULT));
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void createMountainTypeDuplicatesTest(){
+		MountainManager.getInstance().createMountainType("Test", MountainAltitudinalBelt.DEFAULT);
+		MountainManager.getInstance().createMountainType("Test", MountainAltitudinalBelt.DEFAULT);
+	}
+	
+	@Test (expected = IllegalArgumentException.class) 
+	public void createMountainDuplicateTest() {
+		MountainType testMountainType = new MountainType("Test", MountainAltitudinalBelt.DEFAULT);
+		MountainManager.getInstance().createMountain(testMountainType, "Test", 0, Continent.Default);
+		MountainManager.getInstance().createMountain(testMountainType, "Test", 0, Continent.Default);
 	}
 		
 }
